@@ -67,7 +67,6 @@ def transfer_PLASMID(ham_int, source, target, num_targets, vols_list):
         remaining_targets -= num_channels
 
 
-
 #create a function to transfer ethanol using the commands "tip pick up, aspirate, dispense, tip eject"
 # An aspiration pattern will be a list of 2-tuples where the first element is a Plate object and the second element is an integer. 
 # The length of this list is always 8, and positions in the aspiration pattern specify channels. 
