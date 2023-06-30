@@ -40,7 +40,7 @@ class TipRack:
 tips = TipRack(tips_res[0])
 
 
-#create a function to transfer plasmid
+# create a function to transfer plasmid
 # An aspiration pattern will be a list of 2-tuples where the first element is a Plate object and the second element is an integer. 
 # The length of this list is always 8, and positions in the aspiration pattern specify channels(robotic pippetes). 
 # #Unused channels will have a None at that position in the list.
