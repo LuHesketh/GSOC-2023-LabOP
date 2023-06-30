@@ -24,8 +24,6 @@ def generate_protocol():
     # print("... Imported liquid handling")
     labop.import_library("plate_handling")
     # print("... Imported plate handling")
-    labop.import_library("spectrophotometry")
-    # print("... Imported spectrophotometry")
     labop.import_library("sample_arrays")
     # print("... Imported sample arrays")
 
