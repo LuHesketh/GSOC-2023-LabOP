@@ -13,6 +13,7 @@ PLASMID_container = resource_list_with_prefix(lmgr, 'Mrx_96_DW_0002', Plate96, 1
 ethanol_container = resource_list_with_prefix(lmgr, 'Mrx_96_DW_0001', Plate96, 1)
 MPE_plate = resource_list_with_prefix(lmgr, 'Mrx_96_DW_0003', Plate96, 1)
 
+
 #set the liquid class according to the type of tip you want to robot to use
 liq_class = 'StandardVolumeFilter_Water_DispenseJet_Part'
 
@@ -40,6 +41,9 @@ tips = TipRack(tips_res[0])
 
 
 #create a function to transfer plasmid
+# An aspiration pattern will be a list of 2-tuples where the first element is a Plate object and the second element is an integer. 
+# The length of this list is always 8, and positions in the aspiration pattern specify channels(robotic pippetes). 
+# #Unused channels will have a None at that position in the list.
 def transfer_PLASMID(ham_int, source, target, num_targets, vols_list):
     remaining_targets = num_targets
     while remaining_targets > 0:
@@ -64,7 +68,10 @@ def transfer_PLASMID(ham_int, source, target, num_targets, vols_list):
 
 
 
-#create a function to transfer ethanol
+#create a function to transfer ethanol using the commands "tip pick up, aspirate, dispense, tip eject"
+# An aspiration pattern will be a list of 2-tuples where the first element is a Plate object and the second element is an integer. 
+# The length of this list is always 8, and positions in the aspiration pattern specify channels. 
+# #Unused channels will have a None at that position in the list.
 def transfer_ethanol(ham_int, source, target, num_targets, vols_list):
     remaining_targets = num_targets
     while remaining_targets > 0:
