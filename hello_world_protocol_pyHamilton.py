@@ -38,7 +38,6 @@ class TipRack:
     
 tips = TipRack(tips_res[0])
 
-num_targets = 10
 
 #create a function to transfer plasmid
 def transfer_PLASMID(ham_int, source, target, num_targets, vols_list):
@@ -50,13 +49,16 @@ def transfer_PLASMID(ham_int, source, target, num_targets, vols_list):
         tips_poss = tips.get_tips(num_channels)
         tip_pick_up(ham_int, tips_poss)
 
-        aspirate_poss = [(source, x) for x in range(num_channels)]
         vols_list = [20]*num_channels
+
+        aspirate_poss = [(source, x) for x in range(num_channels)]
+        source = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3)]
         aspirate(ham_int, aspirate_poss, vols_list, liquidClass = liq_class)
-        
+
         dispense_poss = [(target, x) for x in range(completed_targets, completed_targets + num_channels)]
-        
+        target = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3) for x in range(num_channels)]
         dispense(ham_int, dispense_poss, vols_list, mixCycles = 3, mixVolume = 100, liquidClass = liq_class)
+
         tip_eject(ham_int)
         remaining_targets -= num_channels
 
@@ -72,21 +74,23 @@ def transfer_ethanol(ham_int, source, target, num_targets, vols_list):
         tips_poss = tips.get_tips(num_channels)
         tip_pick_up(ham_int, tips_poss)
 
-        aspirate_poss = [(source, x) for x in range(num_channels)]
         vols_list = [200]*num_channels
+
+        aspirate_poss = [(source, x) for x in range(num_channels)]
         aspirate(ham_int, aspirate_poss, vols_list, liquidClass = liq_class)
-        
+        source = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3)]
+
         dispense_poss = [(target, x) for x in range(completed_targets, completed_targets + num_channels)]
-        
+        target = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3) for x in range(num_channels)]
         dispense(ham_int, dispense_poss, vols_list, mixCycles = 3, mixVolume = 100, liquidClass = liq_class)
+
         tip_eject(ham_int)
         remaining_targets -= num_channels
-        
 
 
 if __name__ == '__main__': 
     with HamiltonInterface(simulate=True) as ham_int: 
         initialize(ham_int)
-        transfer_PLASMID(ham_int, source = PLASMID_container[0], target = MPE_plate[0], num_targets = 10, vols_list = 20)
-        transfer_ethanol(ham_int, source = ethanol_container[0], target = MPE_plate[0], num_targets = 10, vols_list = 200)
+        transfer_PLASMID(ham_int, source = PLASMID_container[0], target = MPE_plate[0], num_targets = 3, vols_list = 20)
+        transfer_ethanol(ham_int, source = ethanol_container[0], target = MPE_plate[0], num_targets = 3, vols_list = 200)
         

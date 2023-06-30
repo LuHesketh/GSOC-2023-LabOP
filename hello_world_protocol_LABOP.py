@@ -82,8 +82,6 @@ def generate_protocol():
             },
         ),
     )
-
-        
         
     MPE_container = protocol.primitive_step(
         "EmptyContainer",
@@ -96,30 +94,47 @@ def generate_protocol():
             },
         ),
     )
+
+     ### the provision step creates the reagents as objects and attaches them to the containers where they'll be located
+
     provision = protocol.primitive_step(
         "Provision",
         resource=PLASMID,
         destination=PLASMID_container.output_pin("samples"),
         amount=sbol3.Measure(5000, OM.microliter),
+        
+        
     )
-
     provision = protocol.primitive_step(
         "Provision",
         resource=Ethanol,
         destination=Ethanol_container.output_pin("samples"),
         amount=sbol3.Measure(5000, OM.microliter),
     )
-    MPE2_wells_A1 = protocol.primitive_step(
+
+    ### Now that you have the containers and reagents to be used you provide the locations in the labware(we used a 96 well plate)
+    PLASMID_plate = protocol.primitive_step(
+        "PlateCoordinates",
+        source=PLASMID_container.output_pin("samples"),
+        coordinates="A1, A2, A3",
+    )
+    MPE2_pressure_pump = protocol.primitive_step(
         "PlateCoordinates",
         source=MPE_container.output_pin("samples"),
-        coordinates="A1",
+        coordinates="A1, A2, A3",
+    )
+
+    Ethanol_plate = protocol.primitive_step(
+        "PlateCoordinates",
+        source=Ethanol_container.output_pin("samples"),
+        coordinates="A1, A2, A3",
     )
 
     ### Transfer PLASMID from source plate to MPE2 plate
     transfer_PLASMID = protocol.primitive_step(
         "Transfer",
         source=PLASMID_container.output_pin("samples"),
-        destination=MPE2_wells_A1.output_pin("samples"),
+        destination=MPE2_pressure_pump.output_pin("samples"),
         amount=sbol3.Measure(20, OM.microlitre),
 
 
@@ -129,7 +144,7 @@ def generate_protocol():
     transfer_ethanol = protocol.primitive_step(
         "Transfer",
         source=Ethanol_container.output_pin("samples"),
-        destination=MPE2_wells_A1.output_pin("samples"),
+        destination=MPE2_pressure_pump.output_pin("samples"),
         amount=sbol3.Measure(200, OM.microlitre),
     )
 
