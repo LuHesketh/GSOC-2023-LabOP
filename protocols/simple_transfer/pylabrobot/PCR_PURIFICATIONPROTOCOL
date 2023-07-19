@@ -1,7 +1,7 @@
 Created on Mon Mar  6 17:46:32 2023
 
 @author: Luiza
-"""
+
 import json
 from json import JSONEncoder
 import pyhamilton
@@ -25,22 +25,21 @@ from pyhamilton import (mpe2_connect_com, mpe2_filter_plate_placed, mpe2_process
 
 
 
-"""
-   This DNA cleanup/purification protocol is to be executed using 2 HAMILTON modules. They are:
+   #This DNA cleanup/purification protocol is to be executed using 2 HAMILTON modules. They are:
        
-   * MPE2- Air pressure module. to be used to push/process the liquids through a filter
-   * HHS/Heater shaker - to shake the final product at 30 celcius (necessary finalstep)    
+  # * MPE2- Air pressure module. to be used to push/process the liquids through a filter
+  # * HHS/Heater shaker - to shake the final product at 30 celcius (necessary finalstep)    
        
-    the commands will be imported from PyHamilton and they are called out in the final "if name_=_main_" function THIS ORDER:
+  #  the commands will be imported from PyHamilton and they are called out in the final "if name_=_main_" function THIS ORDER:
         
-        - robot grab tip
-        - use tip to transport DNA from DNA plate to sample filter plate (later ejecting the tip)
-        - process DNA through filter 
-        - Add ethanol and do 2 washing steps through filter
-        - and add water to the filter plate
-        - move filter plate to heater shaker using robotic grippers
-        - do shaking steps
-        - retrieve plate manually from heater shaker
+  #      - robot grab tip
+  #      - use tip to transport DNA from DNA plate to sample filter plate (later ejecting the tip)
+  #      - process DNA through filter 
+  #      - Add ethanol and do 2 washing steps through filter
+  #      - and add water to the filter plate
+  #      - move filter plate to heater shaker using robotic grippers
+  #      - do shaking steps
+  #      - retrieve plate manually from heater shaker
 
 
 
