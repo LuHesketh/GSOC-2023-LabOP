@@ -56,11 +56,11 @@ def transfer_PLASMID(ham_int, source, target, num_targets, vols_list):
         vols_list = [20]*num_channels
 
         aspirate_poss = [(source, x) for x in range(num_channels)]
-        # source = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3)]
+        source = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3)]
         aspirate(ham_int, aspirate_poss, vols_list, liquidClass = liq_class)
 
         dispense_poss = [(target, x) for x in range(completed_targets, completed_targets + num_channels)]
-        # target = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3) for x in range(num_channels)]
+        target = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3) for x in range(num_channels)]
         dispense(ham_int, dispense_poss, vols_list, mixCycles = 3, mixVolume = 100, liquidClass = liq_class)
 
         tip_eject(ham_int)
@@ -84,10 +84,10 @@ def transfer_ethanol(ham_int, source, target, num_targets, vols_list):
 
         aspirate_poss = [(source, x) for x in range(num_channels)]
         aspirate(ham_int, aspirate_poss, vols_list, liquidClass = liq_class)
-        # source = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3)]
+        source = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3)]
 
         dispense_poss = [(target, x) for x in range(completed_targets, completed_targets + num_channels)]
-        # target = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3) for x in range(num_channels)]
+        target = [(Plate96[0], 0), (Plate96[0], 1), (Plate96[0], 2), (Plate96[0], 3) for x in range(num_channels)]
         dispense(ham_int, dispense_poss, vols_list, mixCycles = 3, mixVolume = 100, liquidClass = liq_class)
 
         tip_eject(ham_int)
