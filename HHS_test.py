@@ -16,15 +16,14 @@ from pyhamilton import(hhs_begin_monitoring, hhs_create_star_device, hhs_create_
 
 lmgr = LayoutManager('deck_.lay') # make sure you're inputing the right deck layout here
 
-Heater_shaker = lmgr.assign_unused_resource(ResourceType(Plate96, 'heater_shaker_position'))
 
 liq_class = 'StandardVolumeFilter_Water_DispenseJet_Part'
 def shake_samples(device_num, hhs_begin_monitoring, hhs_start_shaker,hhs_start_shaker_timed, hhs_start_temp_ctrl, hhs_stop_shaker, hhs_stop_temp_ctrl, hhs_wait_for_shaker, hhs_wait_for_temp_ctrl, hhs_terminate):    
     
+       device_num =1
+
        device_num = hhs_create_star_device(ham_int, used_node=1)
 
-       device_num=1
-       
        hhs_begin_monitoring(ham_int, device_num, 10, 5, 0)#correct parameters
        
        # heatershaker_start_all_shaker_timed
@@ -53,7 +52,8 @@ def shake_samples(device_num, hhs_begin_monitoring, hhs_start_shaker,hhs_start_s
 if __name__ == '__main__': 
     with HamiltonInterface(simulate=True) as ham_int:
         initialize(ham_int)
-        shake_samples(device_num, hhs_begin_monitoring, hhs_start_shaker,hhs_start_shaker_timed, hhs_start_temp_ctrl, hhs_stop_shaker, hhs_stop_temp_ctrl, hhs_wait_for_shaker, hhs_wait_for_temp_ctrl, hhs_terminate)
+        device_num = 1
+        shake_samples( device_num, hhs_begin_monitoring, hhs_start_shaker,hhs_start_shaker_timed, hhs_start_temp_ctrl, hhs_stop_shaker, hhs_stop_temp_ctrl, hhs_wait_for_shaker, hhs_wait_for_temp_ctrl, hhs_terminate)
   
 	
 	
