@@ -318,7 +318,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
     )
 
-    #here the ethanol would already be inside the MPE2 and the pressure pump would be activated
+    #here the ethanol would already be inside the MPE2 plate and the pressure pump would be activated
     #pushing the ethanol through the collumns inside the container and finishing the second washing step
    def generate_MPE_subprotocol(doc):
         protocol = labop.Protocol("MPE_overpressure")
