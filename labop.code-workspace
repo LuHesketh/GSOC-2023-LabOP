@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "../labop"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../pylabrobot"
+		},
+		{
+			"path": "../pyhamilton"
+		},
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"[python]": {
+			"editor.defaultFormatter": "ms-python.black-formatter"
+		},
+		"python.formatting.provider": "none"
+	}
+}
