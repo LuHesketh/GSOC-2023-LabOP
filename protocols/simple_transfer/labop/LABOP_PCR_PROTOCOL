@@ -284,7 +284,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     MPE_subprotocol = generate_MPE_subprotocol(doc)
 
     initialization = protocol.primitive_step(
-        initialize_subprotocol
+        initialize_subprotocol 
     )
      
     #transfer ethanol to MPE PLATE for first ethanol wash

@@ -35,7 +35,7 @@ def generate_initialize_subprotocol(doc):
     Ethanol.name = "Ethanol 70%, ideal for PCR/PLASMID PUTIFICATION"
     
     water = sbol3.Component(
-        "MLQ water", "https://identifiers.org/pubchem.substance:24901740"
+        "MLQ_water", "https://identifiers.org/pubchem.substance:24901740"
     )
     water.name = "MLQ water for plasmid retrieving"
 
@@ -72,7 +72,7 @@ def generate_initialize_subprotocol(doc):
     Ethanol_container = protocol.primitive_step(
         "EmptyContainer",
         specification=labop.ContainerSpec(
-            "ethanol for DNA washes",
+            "ethanol_for_DNA_washes",
             name="ethanol for DNA washes",
             queryString="cont:StockReagent",
             prefixMap={
@@ -84,7 +84,7 @@ def generate_initialize_subprotocol(doc):
     water_container = protocol.primitive_step(
         "EmptyContainer",
         specification=labop.ContainerSpec(
-            "WATER For cleanup after ethanol washing steps",
+            "WATER_For_cleanup_after_ethanol_washing_steps",
             name="water_container",
             queryString="cont:StockReagent",
             prefixMap={
@@ -177,6 +177,21 @@ def generate_initialize_subprotocol(doc):
     )
     return protocol
 
+#here the PLASMID would already be inside the MPE2 and the pressure pump would be activated
+#pushing the PLASMID through the collumns inside the container
+#a sub-protocol should be made to represent this step
+def generate_MPE_subprotocol(doc):
+    protocol = labop.Protocol("MPE_overpressure")
+    doc.add(protocol)
+
+    mpe2_filter_plate_placed,
+            mpe2_clamp_filter_plate,
+            mpe2_start_mpe_vacuum,
+            mpe2_process_filter_to_waste_container,
+            mpe2_stop_vacuum,
+            mpe2_filter_plate_removed
+
+    return protocol
 
 def generate_protocol():
     import labop
@@ -197,7 +212,7 @@ def generate_protocol():
 
 
     
-    PROTOCOL_NAME = "PCR purification"
+    PROTOCOL_NAME = "PCR_purification"
     PROTOCOL_LONG_NAME="PCR_purification_with_pressurepump_MPE2"
     protocol = labop.Protocol(PROTOCOL_NAME)
     protocol.name = PROTOCOL_LONG_NAME
@@ -219,11 +234,15 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     doc.add(protocol)
     
     initialize_subprotocol = generate_initialize_subprotocol(doc)
+    MPE_subprotocol_defn = generate_MPE_subprotocol(doc)
 
     initialization = protocol.primitive_step(
         initialize_subprotocol
     )
 
+    MPE_subprotocol = protocol.primitive_step( #use this to call out the sub protocol
+        MPE_subprotocol_defn
+    )
 
     plan_mapping = serialize_sample_format(
             xr.DataArray(
@@ -242,28 +261,20 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
                 coords={
                     f"source_{Strings.CONTAINER}": [initialization.output_pin("PLASMID_container").name],
                     f"source_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
-                    f"source_{Strings.CONTAINER}": [initialization.output_pin("Ethanol_container").name],
-                    f"source_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
-                    f"target_{Strings.CONTAINER}": [initialization.output_pin("MPE_container").name],
-                    f"target_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
                     f"source_{Strings.CONTAINER}": [initialization.output_pin("MPE_container").name],
-                    f"source_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
-                    f"target_{Strings.CONTAINER}": [initialization.output_pin("shaking_incubator").name],
-                    f"target_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
-                    f"source_{Strings.CONTAINER}": [initialization.output_pin("water_container").name],
-                    f"source_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
+                    f"source_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"]
                 },
             )
         )
 
     # The SampleMap specifies the sources and targets, along with the mappings.
     plan = labop.SampleMap(
-        sources=[initialization.output_pin("PLASMID_container")][initialization.output_pin("Ethanol_container")][initialization.output_pin("MPE_container")][initialization.output_pin("water_container")],
-        targets=[initialization.output_pin("MPE_container")][initialization.output_pin("shaking_incubator")]
+        sources=[initialization.output_pin("PLASMID_container")],
+        targets=[initialization.output_pin("MPE_container")],
         values=plan_mapping,
     )
 
-   #transfer plasmid to MPE PLATE
+    #transfer plasmid to MPE PLATE
     transfer_by_map = protocol.primitive_step(
         "TransferByMap",
         source=initialization.output_pin("PLASMID_container"),
@@ -273,69 +284,99 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
     )
 
+    plan_mapping1 = serialize_sample_format(
+            xr.DataArray(
+                [
+                    [
+                        [[(20.0 if source_aliquot == target_aliquot else 0.0) for target_aliquot in ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"]]]
+                        for source_aliquot in ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"]
+                    ]
+                ],
+                dims=(
+                    f"source_{Strings.CONTAINER}",
+                    f"source_{Strings.LOCATION}",
+                    f"target_{Strings.CONTAINER}",
+                    f"target_{Strings.LOCATION}",
+                ),
+                coords={
+                    f"source_{Strings.CONTAINER}": [initialization.output_pin("Ethanol_container").name],
+                    f"source_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
+                    f"target_{Strings.CONTAINER}": [initialization.output_pin("MPE_container").name],
+                    f"target_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
+                },
+            )
+        )
 
-#here the PLASMID would already be inside the MPE2 and the pressure pump would be activated
-#pushing the PLASMID through the collumns inside the container
-#a sub-protocol should be made to represent this step
-    def generate_MPE_subprotocol(doc):
-        protocol = labop.Protocol("MPE_overpressure")
-        doc.add(protocol)
-
-    MPE_subprotocol = generate_MPE_subprotocol(doc)
-
-    initialization = protocol.primitive_step(
-        initialize_subprotocol
+    # The SampleMap specifies the sources and targets, along with the mappings.
+    plan1 = labop.SampleMap(
+        sources=[initialization.output_pin("Ethanol_container")],
+        targets=[initialization.output_pin("MPE_container")],
+        values=plan_mapping1,
     )
-     
+
     #transfer ethanol to MPE PLATE for first ethanol wash
     transfer_by_map = protocol.primitive_step(
         "TransferByMap",
         source=initialization.output_pin("Ethanol_container"),
         destination=initialization.output_pin("MPE_container"),
-        plan=plan,
+        plan=plan1,
         amount=sbol3.Measure(200, tyto.OM.milliliter),
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
     )
 
-#here the ethanol would already be inside the MPE2 and the pressure pump would be activated
-#pushing the ethanol through the collumns inside the container and finishing the first washing step
-    def generate_MPE_subprotocol(doc):
-        protocol = labop.Protocol("MPE_overpressure")
-        doc.add(protocol)
-
-    MPE_subprotocol = generate_MPE_subprotocol(doc)
-
-    initialization = protocol.primitive_step(
-        initialize_subprotocol
+    # The SampleMap specifies the sources and targets, along with the mappings.
+    plan2 = labop.SampleMap(
+        sources=[initialization.output_pin("Ethanol_container")],
+        targets=[initialization.output_pin("MPE_container")],
+        values=plan_mapping1,
     )
+
     #second ethanol wash ethanol transfer 
     transfer_by_map = protocol.primitive_step(
         "TransferByMap",
         source=initialization.output_pin("Ethanol_container"),
         destination=initialization.output_pin("MPE_container"),
-        plan=plan,
+        plan=plan2,
         amount=sbol3.Measure(200, tyto.OM.milliliter),
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
     )
 
-    #here the ethanol would already be inside the MPE2 plate and the pressure pump would be activated
-    #pushing the ethanol through the collumns inside the container and finishing the second washing step
-   def generate_MPE_subprotocol(doc):
-        protocol = labop.Protocol("MPE_overpressure")
-        doc.add(protocol)
+    plan_mapping3 = serialize_sample_format(
+            xr.DataArray(
+                [
+                    [
+                        [[(20.0 if source_aliquot == target_aliquot else 0.0) for target_aliquot in ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"]]]
+                        for source_aliquot in ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"]
+                    ]
+                ],
+                dims=(
+                    f"source_{Strings.CONTAINER}",
+                    f"source_{Strings.LOCATION}",
+                    f"target_{Strings.CONTAINER}",
+                    f"target_{Strings.LOCATION}",
+                ),
+                coords={
+                    f"source_{Strings.CONTAINER}": [initialization.output_pin("water_container").name],
+                    f"source_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
+                    f"target_{Strings.CONTAINER}": [initialization.output_pin("MPE_container").name],
+                    f"target_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
+                },
+            )
+        )
 
-    MPE_subprotocol = generate_MPE_subprotocol(doc)
-
-    initialization = protocol.primitive_step(
-        initialize_subprotocol
+    # The SampleMap specifies the sources and targets, along with the mappings.
+    plan3= labop.SampleMap(
+        sources=[initialization.output_pin("water_container")],
+        targets=[initialization.output_pin("MPE_container")],
+        values=plan_mapping3,
     )
-    
+
     #transfer water to MPE plate for plasmid retrieving
     transfer_by_map = protocol.primitive_step(
         "TransferByMap",
-        source=initialization.output_pin("water_container"),
-        destination=initialization.output_pin("MPE_container"),
-        plan=plan,
+        source=[initialization.output_pin("water_container")],
+        destination=[initialization.output_pin("MPE_container")],
+        plan=plan3,
         amount=sbol3.Measure(20, tyto.OM.milliliter),
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
     )
@@ -345,10 +386,10 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     #shake samples to restore purified PLASMID and manually retrive final product from heater shaker
     incubate = protocol.primitive_step(
     "Incubate",
-    location= shaking_incubator.output_pin("samples"),
-    duration=sbol3.Measure(3, OM.min),
+    location= initialization.output_pin("shaking_incubator"),
+    duration=sbol3.Measure(3, OM.minute),
     temperature=sbol3.Measure(30, OM.degree_Celsius),
-    shakingFrequency=sbol3.Measure(250, None),
+    shakingFrequency=sbol3.Measure(250, OM.hertz),
     ) 
     
     protocol.to_dot().render(os.path.join(OUT_DIR, f"{filename}-protocol-graph"))
@@ -363,7 +404,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     ee = labop.ExecutionEngine(
         out_dir=OUT_DIR,
         failsafe=False,
-        # specializations=[PyHamiltonSpecialization()]
+        # specializations=[PylabRobotSpecialization()]
         sample_format="xarray"
     )
 
