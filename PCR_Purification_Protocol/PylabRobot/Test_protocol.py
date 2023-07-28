@@ -1,3 +1,4 @@
+import asyncio
 import pylabrobot
 
 from pylabrobot.liquid_handling import LiquidHandler
