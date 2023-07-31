@@ -183,28 +183,12 @@ def generate_initialize_subprotocol(doc):
 def generate_MPE_subprotocol(doc):
     protocol = labop.Protocol("MPE_overpressure")
     doc.add(protocol)
-
-    mpe2_filter_plate_placed(ham_int, mpe2_id, 15, 15)
-
-    mpe2_clamp_filter_plate(ham_int, mpe2_id)
-
-    mpe2_start_mpe_vacuum( ham_int, mpe2_id, waste_container_id="", disable_vacuum_check="")
-
-    mpe2_process_filter_to_waste_container(
-        ham_int,
-        mpe2_id,
-        control_points,
-        return_plate_to_integration_area="",
-        waste_container_id="",
-        disable_vacuum_check="",
-    )
-
-    mpe2_stop_vacuum(ham_int, mpe2_id)
-
-    mpe2_filter_plate_removed(ham_int, mpe2_id)
-
-        
-
+    # mpe2_filter_plate_placed,
+    #         mpe2_clamp_filter_plate,
+    #         mpe2_start_mpe_vacuum,
+    #         mpe2_process_filter_to_waste_container,
+    #         mpe2_stop_vacuum,
+    #         mpe2_filter_plate_removed
     return protocol
 
 def generate_protocol():
