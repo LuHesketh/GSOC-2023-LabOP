@@ -183,17 +183,28 @@ def generate_initialize_subprotocol(doc):
 def generate_MPE_subprotocol(doc):
     protocol = labop.Protocol("MPE_overpressure")
     doc.add(protocol)
-<<<<<<< HEAD:PCR_Purification_Protocol/LabOp/LABOP_PCR_PROTOCOL
 
-    mpe2_filter_plate_placed,
-            mpe2_clamp_filter_plate,
-            mpe2_start_mpe_vacuum,
-            mpe2_process_filter_to_waste_container,
-            mpe2_stop_vacuum,
-            mpe2_filter_plate_removed
+    mpe2_filter_plate_placed(ham_int, mpe2_id, 15, 15)
 
-=======
->>>>>>> f806a756d5dd23e980d2373e4f3a1fbd4dc0eefc:protocols/pcr/labop/LABOP_PCR_PROTOCOL.py
+    mpe2_clamp_filter_plate(ham_int, mpe2_id)
+
+    mpe2_start_mpe_vacuum( ham_int, mpe2_id, waste_container_id="", disable_vacuum_check="")
+
+    mpe2_process_filter_to_waste_container(
+        ham_int,
+        mpe2_id,
+        control_points,
+        return_plate_to_integration_area="",
+        waste_container_id="",
+        disable_vacuum_check="",
+    )
+
+    mpe2_stop_vacuum(ham_int, mpe2_id)
+
+    mpe2_filter_plate_removed(ham_int, mpe2_id)
+
+        
+
     return protocol
 
 def generate_protocol():
