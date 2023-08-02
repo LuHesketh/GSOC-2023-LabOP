@@ -16,7 +16,7 @@ tip_rack = HTF_L(name="tip rack")
 lh.deck.assign_child_resource(tip_rack, location=Coordinate(x=100, y=100, z=100))
 
 #assign the PCR plate
-PLASMID_plate = Cos_96_EZWash(name="PLASMID_plate")
+PLASMID_plate = Cos_96_PCR(name="PLASMID_plate")
 lh.deck.assign_child_resource(PLASMID_plate, location=Coordinate(x=200, y=100, z=100))
 #assign the MPE plate
 MPE_plate = Cos_96_EZWash(name="MPE_plate")

@@ -28,14 +28,6 @@ def generate_initialize_subprotocol(doc):
     )
     PLASMID.name = "DNA TO BE PURIFIEd"
 
-    provision = protocol.primitive_step(
-        "Provision",
-        resource=PLASMID,
-        destination=PLASMID_plate.output_pin("samples"),
-        amount=sbol3.Measure(5000, OM.microliter),
-        
-        
-    
     doc.add(PLASMID)    
     
     PROTOCOL_NAME = "initialize_simple_transfer"
@@ -48,27 +40,45 @@ def generate_initialize_subprotocol(doc):
     """
     
     doc.add(protocol)
+
 	
     load_Tiprack_on_deck = protocol.primitive_step("LoadRackOnInstrument", 
         rack=labop.ContainerSpec("tiprack", queryString="cont:HTF_L"),
         coordinates="(x=100, y=100, z=100)"
     )
 
-    load_PLASMID_plate_on_deck = protocol.primitive_step(
-    "LoadContainerOnInstrument",
-    specification=PLASMID_plate,
-    instrument=PylabrobotSpecialization.EQUIPMENT["STAR"],
-    slots="A1:H12",
+    load_PLASMID_plate_on_deck = protocol.primitive_step("LoadContainerOnInstrument",
+            specification=labop.ContainerSpec("PLASMID_plate",
+            name="PLASMID_plate",
+            queryString="cont:Cos_96_PCR",
+            prefixMap={
+                "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
+            },
+        ),
+        slots="A1:H12",
+        coordinates="(x=200, y=100, z=100)"
     )
 
-    load_MPE_plate_on_deck = protocol.primitive_step(
-    "LoadContainerOnInstrument",
-    specification=MPE_plate,
-    instrument=PylabrobotSpecialization.EQUIPMENT["STAR"],
-    slots="A1:H12",
+    load_MPE_plate_on_deck = protocol.primitive_step("LoadContainerOnInstrument",
+            specification=labop.ContainerSpec("MPE_plate",
+            name="MPE_plate",
+            queryString="cont:Cos_96_EZWash",
+            prefixMap={
+                "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
+            },
+        ),
+        slots="A1:H12",
+        coordinates="(x=400, y=100, z=100)"
     )
-
-     output1 = protocol.designate_output(
+    
+    provision = protocol.primitive_step(
+        "Provision",
+        resource=PLASMID,
+        destination=PLASMID_plate.output_pin("samples"),
+        amount=sbol3.Measure(30, OM.microliter),
+    )
+        
+    output1 = protocol.designate_output(
         "PLASMID_plate",
         "http://bioprotocols.org/labop#SampleArray",
         source=PLASMID_plate.output_pin("samples"),
@@ -177,7 +187,7 @@ def generate_protocol():
     ee = labop.ExecutionEngine(
         out_dir=OUT_DIR,
         failsafe=False,
-        # specializations=[PyHamiltonSpecialization()]
+        # specializations=[PylabrobotSpecialization()]
         sample_format="xarray"
     )
 
