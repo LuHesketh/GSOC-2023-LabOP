@@ -28,11 +28,15 @@ def generate_initialize_subprotocol(doc):
     )
     PLASMID.name = "DNA TO BE PURIFIEd"
 
+    provision = protocol.primitive_step(
+        "Provision",
+        resource=PLASMID,
+        destination=PLASMID_plate.output_pin("samples"),
+        amount=sbol3.Measure(5000, OM.microliter),
+        
+        
     
-
-    doc.add(PLASMID)
-    doc.add(Ethanol)
-    
+    doc.add(PLASMID)    
     
     PROTOCOL_NAME = "initialize_simple_transfer"
     PROTOCOL_LONG_NAME="initialize_simple_transfer"
@@ -44,54 +48,41 @@ def generate_initialize_subprotocol(doc):
     """
     
     doc.add(protocol)
-    
-        
-    PLASMID_container = protocol.primitive_step(
-        "EmptyContainer",
-        specification=labop.ContainerSpec(
-            "PLASMID",
-            name="PLASMID",
-            queryString="cont:StockReagent",
-            prefixMap={
-                "cont": "https://sift.net/container-ontology/container-ontology#"
-            },
-        ),
+	
+    load_Tiprack_on_deck = protocol.primitive_step("LoadRackOnInstrument", 
+        rack=labop.ContainerSpec("tiprack", queryString="cont:HTF_L"),
+        coordinates="(x=100, y=100, z=100)"
     )
 
-    MPE_container = protocol.primitive_step(
-        "EmptyContainer",
-        specification=labop.ContainerSpec(
-            "MPE FILTER PLATE",
-            name="MPE FILTER PLATE",
-            queryString="cont:StockReagent",
-            prefixMap={
-                "cont": "Cos_96_EZWash"
-            },
-        ),
+    load_PLASMID_plate_on_deck = protocol.primitive_step(
+    "LoadContainerOnInstrument",
+    specification=PLASMID_plate,
+    instrument=PylabrobotSpecialization.EQUIPMENT["STAR"],
+    slots="A1:H12",
     )
 
-     ### the provision step creates the reagents as objects and attaches them to the containers where they'll be located
-
-    provision = protocol.primitive_step(
-        "Provision",
-        resource=PLASMID,
-        destination=PLASMID_container.output_pin("samples"),
-        amount=sbol3.Measure(5000, OM.microliter),
-        
-        
+    load_MPE_plate_on_deck = protocol.primitive_step(
+    "LoadContainerOnInstrument",
+    specification=MPE_plate,
+    instrument=PylabrobotSpecialization.EQUIPMENT["STAR"],
+    slots="A1:H12",
     )
 
-    output1 = protocol.designate_output(
-        "PLASMID_container",
+     output1 = protocol.designate_output(
+        "PLASMID_plate",
         "http://bioprotocols.org/labop#SampleArray",
-        source=PLASMID_container.output_pin("samples"),
+        source=PLASMID_plate.output_pin("samples"),
     )
 
     output2 = protocol.designate_output(
-        "MPE_container",
+        "MPE_plate",
         "http://bioprotocols.org/labop#SampleArray",
-        source=MPE_container.output_pin("samples"),
-    )
+        source=MPE_plate.output_pin("samples"),
+    )		
+
+
+     ### the provision step creates the reagents as objects and attaches them to the containers where they'll be located
+
 
     return protocol
 
@@ -147,9 +138,9 @@ def generate_protocol():
                     f"target_{Strings.LOCATION}",
                 ),
                 coords={
-                    f"source_{Strings.CONTAINER}": [initialization.output_pin("PLASMID_container").name],
+                    f"source_{Strings.CONTAINER}": [initialization.output_pin("PLASMID_plate").name],
                     f"source_{Strings.LOCATION}": ["A1", "A2", "A3"],
-                    f"target_{Strings.CONTAINER}": [initialization.output_pin("MPE_container").name],
+                    f"target_{Strings.CONTAINER}": [initialization.output_pin("MPE_plate").name],
                     f"target_{Strings.LOCATION}": ["A1", "A2", "A3"],
                 },
             )
@@ -157,8 +148,8 @@ def generate_protocol():
 
     # The SampleMap specifies the sources and targets, along with the mappings.
     plan = labop.SampleMap(
-        sources=[initialization.output_pin("PLASMID_container")],
-        targets=[initialization.output_pin("MPE_container")],
+        sources=[initialization.output_pin("PLASMID_plate")],
+        targets=[initialization.output_pin("MPE_plate")],
         values=plan_mapping,
     )
 
@@ -167,8 +158,8 @@ def generate_protocol():
     # until execution, but the SampleMap needs to reference them.
     transfer_by_map = protocol.primitive_step(
         "TransferByMap",
-        source=initialization.output_pin("PLASMID_container"),
-        destination=initialization.output_pin("MPE_container"),
+        source=initialization.output_pin("PLASMID_plate"),
+        destination=initialization.output_pin("MPE_plate"),
         plan=plan,
         amount=sbol3.Measure(20, tyto.OM.milliliter),
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
