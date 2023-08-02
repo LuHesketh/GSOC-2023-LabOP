@@ -53,6 +53,9 @@ COMPATIBLE_TIPS = {
 #left is LabOp
 #right is container API name on MIcro lab star and starlet (pylabrobot)
 #this is for tip carriers, tipracks and 96 well plates of various dimensions
+
+#this is for TIP carriers (C:\Users\Luiza\pylabrobot\pylabrobot\resources\ml_star\tip_carriers.py)
+
 LABWARE_MAP = {
     ContO["ML STAR Tip carrier with 5 4ml tip with filter racks landscape"]: "TIP_CAR_120BC_4mlTF_A00",
     ContO["ML STAR Tip carrier with 5 5ml tip racks landscape"]: "TIP_CAR_120BC_5mlT_A00",
@@ -98,10 +101,21 @@ LABWARE_MAP = {
     ContO["ML STAR Tip carrier with 4 50ul tip racks landscape [revision A00]"]: "TIP_CAR_384_TIP_50ul_A00",
     ContO["ML STAR Tip Carrier for 5 Racks with 96 Tips landscape [revision A00]"]: "TIP_CAR_480",
     ContO["NEST 96 Well Plate"]: "nest_96_wellplate_200ul_flat",
-
-
-
-
+#this is for PLATES (C:\Users\Luiza\pylabrobot\pylabrobot\resources\corning_costar\plates.py)
+#"""" Corning Costar plates """
+    ContO["Corning Costar 10 ul plate [1536]"]: "Cos_1536_10ul",
+    ContO["Corning Costar deep well plate [384]"]: "Cos_384_DW",
+    ContO["Corning Costar PCR plate [384]"]: "Cos_384_PCR",
+    ContO["Corning Costar 1 mL deep well plate [96]"]: "Cos_96_DW_1mL",
+    ContO["Corning Costar 2 mL deep well plate [96]"]: "Cos_96_DW_2mL",
+    ContO["Corning Costar EZwash plate [96]"]: "Cos_96_EZWash",
+    ContO["Corning Costar filter plate [96]"]: "Cos_96_Filter",
+    ContO["Corning Costar PCR plate [96]"]: "Cos_96_PCR",
+    ContO["Corning Costar ProtCryst plate [96]"]: "Cos_96_ProtCryst",
+    ContO["Corning Costar SpecOps plate [96]"]: "Cos_96_SpecOps",
+    ContO["Corning Costar RD plate [96]"]: "Cos_96_Rd",
+    ContO["Corning Costar UV plate [96]"]: "Cos_96_UV",
+    ContO["Corning Costar Vb plate [96]"]: "Cos_96_Vb",
 
 }
 

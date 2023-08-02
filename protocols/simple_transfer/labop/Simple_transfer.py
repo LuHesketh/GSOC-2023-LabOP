@@ -28,13 +28,6 @@ def generate_initialize_subprotocol(doc):
     )
     PLASMID.name = "DNA TO BE PURIFIEd"
 
-    Ethanol = sbol3.Component(
-        "silica_beads",
-        "https://nanocym.com/wp-content/uploads/2018/07/NanoCym-All-Datasheets-.pdf",
-    )
-    Ethanol.name = "Ethanol 70%, ideal for PCR/PLASMID PUTIFICATION"
-    
-
     
 
     doc.add(PLASMID)
@@ -65,27 +58,14 @@ def generate_initialize_subprotocol(doc):
         ),
     )
 
-
-    Ethanol_container = protocol.primitive_step(
-        "EmptyContainer",
-        specification=labop.ContainerSpec(
-            "sulforhodamine_calibrant",
-            name="Sulforhodamine 101 calibrant",
-            queryString="cont:StockReagent",
-            prefixMap={
-                "cont": "https://sift.net/container-ontology/container-ontology#"
-            },
-        ),
-    )
-        
     MPE_container = protocol.primitive_step(
         "EmptyContainer",
         specification=labop.ContainerSpec(
-            "PLASMID_container",
-            name="LASMID_container",
+            "MPE FILTER PLATE",
+            name="MPE FILTER PLATE",
             queryString="cont:StockReagent",
             prefixMap={
-                "cont": "https://sift.net/container-ontology/container-ontology#"
+                "cont": "Cos_96_EZWash"
             },
         ),
     )
@@ -100,12 +80,6 @@ def generate_initialize_subprotocol(doc):
         
         
     )
-    provision = protocol.primitive_step(
-        "Provision",
-        resource=Ethanol,
-        destination=Ethanol_container.output_pin("samples"),
-        amount=sbol3.Measure(5000, OM.microliter),
-    )
 
     output1 = protocol.designate_output(
         "PLASMID_container",
@@ -119,11 +93,6 @@ def generate_initialize_subprotocol(doc):
         source=MPE_container.output_pin("samples"),
     )
 
-    output3 = protocol.designate_output(
-        "Ethanol_container",
-        "http://bioprotocols.org/labop#SampleArray",
-        source=Ethanol_container.output_pin("samples"),
-    )
     return protocol
 
 
@@ -204,43 +173,6 @@ def generate_protocol():
         amount=sbol3.Measure(20, tyto.OM.milliliter),
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
     )
-
-
-    ### Now that you have the containers and reagents to be used you provide the locations in the labware(we used a 96 well plate)
-    # PLASMID_plate = protocol.primitive_step(
-    #     "PlateCoordinates",
-    #     source=initialization.output_pin("PLASMID_container"),
-    #     coordinates="A1:A3",
-    # )
-    # MPE2_pressure_pump = protocol.primitive_step(
-    #     "PlateCoordinates",
-    #     source=initialization.output_pin("MPE_container"),
-    #     coordinates="A1:A3",
-    # )
-
-    # Ethanol_plate = protocol.primitive_step(
-    #     "PlateCoordinates",
-    #     source=initialization.output_pin("Ethanol_container"),
-    #     coordinates="A1:A3",
-    # )
-
-    # ### Transfer PLASMID from source plate to MPE2 plate
-    # transfer_PLASMID = protocol.primitive_step(
-    #     "Transfer",
-    #     source=PLASMID_plate.output_pin("samples"),
-    #     destination=MPE2_pressure_pump.output_pin("samples"),
-    #     amount=sbol3.Measure(20, OM.microlitre),
-
-
-    # ### Transfer Ethanol from source plate to MPE2 plate for Ethanol washes
-
-    # )
-    # transfer_ethanol = protocol.primitive_step(
-    #     "Transfer",
-    #     source=Ethanol_plate.output_pin("samples"),
-    #     destination=MPE2_pressure_pump.output_pin("samples"),
-    #     amount=sbol3.Measure(200, OM.microlitre),
-    # )
 
     protocol.to_dot().render(os.path.join(OUT_DIR, f"{filename}-protocol-graph"))
 
