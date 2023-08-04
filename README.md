@@ -2,7 +2,9 @@
 
 <h1>Welcome</h1>
 
-<p>This page refers to the 2023 Google summer of code project <strong>"Advancing Reproducible Science through Open Source Laboratory Protocols as Software"</strong> developed in partnership with <a href="https://bioprotocols.github.io/labop/">LabOp</a>,an online Open Source representation for Laboratory protocols.<p>
+<p>This page refers to the 2023 Google summer of code project <strong>"Advancing Reproducible Science through Open Source Laboratory Protocols as Software"</strong> developed in partnership with <a href="https://bioprotocols.github.io/labop/">LabOp</a>,an online Open Source representation for Laboratory protocols under the mentorship of  {{% mention danbryce %}} and {{% mention photocyte %}}<p>
+
+
 
 <h2>What's going on?</h2>
 <p>Nowadays Biotechnology laboratories face a very common issue, that is that protocols are difficult to share and to adapt for machine execution. Laboratory protocols are critical to biological research and development, yet complicated to communicate and reproduce across projects, investigators, and organizations. While many attempts have been made to address this challenge, there is currently no available protocol representation that is unambiguous enough for precise interpretation and automation, yet simultaneously abstract enough to enable reuse and adaptation.<p>
