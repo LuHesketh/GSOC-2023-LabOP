@@ -47,7 +47,7 @@ def generate_initialize_subprotocol(doc):
         coordinates="(x=100, y=100, z=100)"
     )
 
-    load_PLASMID_plate_on_deck = protocol.primitive_step("LoadContainerOnInstrument",
+    PLASMID_plate = protocol.primitive_step("LoadContainerOnInstrument",
             specification=labop.ContainerSpec("PLASMID_plate",
             name="PLASMID_plate",
             queryString="cont:Cos_96_PCR",
@@ -55,11 +55,10 @@ def generate_initialize_subprotocol(doc):
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
         ),
-        slots="A1:H12",
-        coordinates="(x=200, y=100, z=100)"
+        slots="(x=200, y=100, z=100)"
     )
 
-    load_MPE_plate_on_deck = protocol.primitive_step("LoadContainerOnInstrument",
+    MPE_plate = protocol.primitive_step("LoadContainerOnInstrument",
             specification=labop.ContainerSpec("MPE_plate",
             name="MPE_plate",
             queryString="cont:Cos_96_EZWash",
@@ -67,8 +66,7 @@ def generate_initialize_subprotocol(doc):
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
         ),
-        slots="A1:H12",
-        coordinates="(x=400, y=100, z=100)"
+        slots="(x=400, y=100, z=100)"
     )
     
     provision = protocol.primitive_step(
@@ -197,7 +195,7 @@ def generate_protocol():
         id="test_execution",
         parameter_values=[],
     )
-    ee.prov_observer.to_dot().render(os.path.join(OUT_DIR, f"{filename}-sample-graph"))
+    # ee.prov_observer.to_dot().render(os.path.join(OUT_DIR, f"{filename}-sample-graph"))
 
 
 
