@@ -1,5 +1,4 @@
 
-
 import pyhamilton
 import os
 from pyhamilton import (HamiltonInterface,  LayoutManager, Plate96, Tip96, initialize, tip_pick_up, move_plate,

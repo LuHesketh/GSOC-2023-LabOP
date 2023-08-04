@@ -54,9 +54,9 @@ COMPATIBLE_TIPS = {
 #right is container API name on MIcro lab star and starlet (pylabrobot)
 #this is for tip carriers, tipracks and 96 well plates of various dimensions
 
-#this is for TIP carriers (C:\Users\Luiza\pylabrobot\pylabrobot\resources\ml_star\tip_carriers.py)
-
 LABWARE_MAP = {
+#this is for TIP carriers (C:\Users\Luiza\pylabrobot\pylabrobot\resources\ml_star\tip_carriers.py)
+# HAMILTON ML star tip carriers
     ContO["ML STAR Tip carrier with 5 4ml tip with filter racks landscape"]: "TIP_CAR_120BC_4mlTF_A00",
     ContO["ML STAR Tip carrier with 5 5ml tip racks landscape"]: "TIP_CAR_120BC_5mlT_A00",
     ContO["ML STAR Tip carrier for 3 Racks with 96 Tips portrait [revision A00]"]: "TIP_CAR_288_A00",
@@ -108,7 +108,11 @@ LABWARE_MAP = {
     ContO["Corning Costar PCR plate [384]"]: "Cos_384_PCR",
     ContO["Corning Costar 1 mL deep well plate [96]"]: "Cos_96_DW_1mL",
     ContO["Corning Costar 2 mL deep well plate [96]"]: "Cos_96_DW_2mL",
+    ContO["Corning Costar 500ul deep well plate [96]"]: "Cos_96_DW_500ul",
     ContO["Corning Costar EZwash plate [96]"]: "Cos_96_EZWash",
+    ContO["Corning Costar FL plate [96]"]: "Cos_96_FL",
+    ContO["Corning Costar filter plate [96]"]: "Cos_96_Filter",
+    ContO["Corning Costar Half area plate [96]"]: "Cos_96_HalfArea",
     ContO["Corning Costar filter plate [96]"]: "Cos_96_Filter",
     ContO["Corning Costar PCR plate [96]"]: "Cos_96_PCR",
     ContO["Corning Costar ProtCryst plate [96]"]: "Cos_96_ProtCryst",
@@ -116,14 +120,43 @@ LABWARE_MAP = {
     ContO["Corning Costar RD plate [96]"]: "Cos_96_Rd",
     ContO["Corning Costar UV plate [96]"]: "Cos_96_UV",
     ContO["Corning Costar Vb plate [96]"]: "Cos_96_Vb",
+#this is for TIPRACKS (C:\Users\Luiza\pylabrobot\pylabrobot\resources\corning_costar\plates.py)
+#""" HAMILTON ML Star tips """
+    ContO["Tip Rack 24x 4ml Tip with Filter landscape oriented"]: "FourmlTF_L",
+    ContO["Tip Rack 24x 5ml Tip landscape oriented"]: "FivemlT_L",
+    ContO["Tip Rack with 96 1000ul High Volume Tip with filter"]: "HTF_L",
+    ContO["Tip Rack with 96 1000ul High Volume Tip"]: "HT_L",
+    ContO["Tip Rack with 96 10ul Low Volume Tip with filter"]: "LTF_L",
+    ContO["Tip Rack with 96 10ul Low Volume Tip"]: "LT_L",
+    ContO["Tip Rack with 96 300ul Standard Volume Tip with filter"]: "STF_L",
+    ContO["Tip Rack with 96 300ul Standard Volume Tip"]: "ST_L",
+#this is for Plate carriers (C:\Users\Luiza\pylabrobot\pylabrobot\resources\corning_costar\plates.py)
+#""" Hamilton ML Star plate carriers """
+    ContO["Plate Carrier for 5 deep well 96 Well PCR Plates"]: "PLT_CAR_L5AC_A00",
+    ContO["Plate Carrier for 5 plates"]: "PLT_CAR_L5AC",
+    ContO["Plate Carrier with 5 adjustable (height) portrait positions for archive plates"]: "PLT_CAR_L5FLEX_AC",
+    ContO["Plate Carrier with 5 adjustable (height) positions for MTP"]: "PLT_CAR_L5FLEX_MD",
+    ContO["Plate Carrier with 5 adjustable (height) positions for MTP "]: "PLT_CAR_L5FLEX_MD_A00",
+    ContO["Plate Carrier for 5 plates"]: "PLT_CAR_L5MD",
+    ContO["Plate Carrier for 5 96/384-Well Plates"]: "PLT_CAR_L5MD_A00",
+    ContO["Plate Carrier for 5 PCR plates"]: "PLT_CAR_L5PCR",
+    ContO["Plate Carrier for 5 PCR landscape plates [revision 00]"]: "PLT_CAR_L5PCR_A00",
+    ContO["Plate Carrier for 5 PCR landscape plates [revision 01]"]: "PLT_CAR_L5PCR_A01",
+    ContO["Plate Carrier for 3 96 Deep Well Plates (portrait)"]: "PLT_CAR_P3AC_A00",
+    ContO["Plate Carrier for 3 96 Deep Well Plates (portrait) [revision 01]"]: "PLT_CAR_P3AC_A01",
+    ContO["Plate Carrier PLT_CAR_P3HD"]: "PLT_CAR_P3HD",
+    ContO["Plate Carrier PLT_CAR_P3MD"]: "PLT_CAR_P3MD",
+    ContO["Plate Carrier for 3 96/384-Well Plates (Portrait)"]: "PLT_CAR_P3MD_A00",
+    ContO["Plate Carrier PLT_CAR_P3MD"]: "PLT_CAR_P3MD_A01",
+    ContO["Carrier for 3 96/384-Well Plates (Portrait)"]: "PLT_CAR_P3MD",
+    ContO["Plate Carrier PLT_CAR_P3MD"]: "PLT_CAR_P3MD_A01",
+
 
 }
 
 REVERSE_LABWARE_MAP = LABWARE_MAP.__class__(map(reversed, LABWARE_MAP.items()))
 
-
-#this class serves for channels and modules that the machine has
-class pylabrobotSpecialization(BehaviorSpecialization):
+class pylabrobotSpecialization(labop_convert.behavior_specialization.BehaviorSpecialization):
     
     def __init__(
         self, filename, resolutions: Dict[sbol3.Identified, str] = None
@@ -215,6 +248,7 @@ class pylabrobotSpecialization(BehaviorSpecialization):
                     text += f" (x {qty})"
                 text += "\n"
                 markdown += text
+                
 
     def handle_process_failure(self, record, exception):
         super().handle_process_failure(record, exception)
