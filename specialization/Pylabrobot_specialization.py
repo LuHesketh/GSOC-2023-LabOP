@@ -488,7 +488,7 @@ class pylabrobotSpecialization(labop_convert.behavior_specialization.BehaviorSpe
         else:
             raise Exception(f'Invalid input pin "source" for Transfer.')
 
-        # Map the source container to a variable name in the OT2 api script
+        # Map the source container to a variable name in the pylabrobot api script
         source_name = None
         for deck, labware in self.configuration.items():
             if labware == source_container:
@@ -574,7 +574,7 @@ class pylabrobotSpecialization(labop_convert.behavior_specialization.BehaviorSpe
         value = parameter_value_map["amount"]["value"].value
         units = parameter_value_map["amount"]["value"].unit
         units = tyto.OM.get_term_by_uri(units)
-        OT2Pipette = "left"
+        pylabrobot = "left"
 
         # Trace the "source" pin back to the EmptyContainer to retrieve the
         # ContainerSpec for the destination container
