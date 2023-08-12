@@ -13,6 +13,8 @@ import xarray as xr
 from tyto import OM
 import tyto
 
+from labop_convert.Pylabrobot import Pylabrobot_specialization
+
 filename = "".join(__file__.split(".py")[0].split("/")[-1:])
 OUT_DIR = os.path.join(os.path.dirname(__file__), "artifacts")
 if not os.path.exists(OUT_DIR):
@@ -185,7 +187,7 @@ def generate_protocol():
     ee = labop.ExecutionEngine(
         out_dir=OUT_DIR,
         failsafe=False,
-        # specializations=[PylabrobotSpecialization()]
+        specializations=[pylabrobotSpecialization()],
         sample_format="xarray"
     )
 

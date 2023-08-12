@@ -634,3 +634,110 @@ class pylabrobotSpecialization(labop_convert.behavior_specialization.BehaviorSpe
                 ]
 
 
+    def define_rack(
+        self, record: labop.ActivityNodeExecution, ex: labop.ProtocolExecution
+    ):
+        call = record.call.lookup()
+        parameter_value_map = call.parameter_value_map()
+
+        spec = parameter_value_map["specification"]["value"]
+        slots = parameter_value_map["slots"]["value"]
+
+        # FIXME the protocol var_to_entity mapping links variables created in
+        # the execution trace with real values assigned here, such as
+        # container below.  This mapping can be used in later processing to
+        # reuse bindings.
+        #
+        # self.var_to_entity[samples_var] = container
+
+        # OT2Props = json.loads(spec.OT2SpecificProps)
+        # OT2Deck = OT2Props["deck"]
+
+    def load_container_in_rack(
+        self, record: labop.ActivityNodeExecution, ex: labop.ProtocolExecution
+    ):
+        call = record.call.lookup()
+        parameter_value_map = call.parameter_value_map()
+        container: labop.ContainerSpec = parameter_value_map["container"]["value"]
+        coords: str = (
+            parameter_value_map["coordinates"]["value"]
+            if "coordinates" in parameter_value_map
+            else "A1"
+        )
+        slots: labop.SampleCollection = parameter_value_map["slots"]["value"]
+        samples: labop.SampleMask = parameter_value_map["samples"]["value"]
+
+        # TODO: validate coordinates for the given container spec
+        samples.source = slots
+        samples.mask = coords
+        container_str = get_container_name(container)
+
+        rack_str = ""
+        try:
+            # TODO: replace this lookup with a call to get_token_source()
+            rack = (
+                slots.get_parent()
+                .get_parent()
+                .token_source.lookup()
+                .node.lookup()
+                .input_pin("specification")
+                .value.value.lookup()
+            )
+            rack_str = get_container_name(rack)
+        except Exception as e:
+            print(e)
+
+        aliquots = get_sample_list(coords)
+        if len(aliquots) == 1:
+            self.markdown_steps += [
+                f"Load {container_str} in slot {coords} of {rack_str}"
+            ]
+        elif len(aliquots) > 1:
+            self.markdown_steps += [
+                f"Load {container_str}s in slots {coords} of {rack_str}"
+            ]
+
+    def load_container_on_instrument(
+        self, record: labop.ActivityNodeExecution, ex: labop.ProtocolExecution
+    ):
+        call = record.call.lookup()
+        parameter_value_map = call.parameter_value_map()
+        container_spec: labop.ContainerSpec = parameter_value_map["specification"][
+            "value"
+        ]
+        slots: str = (
+            parameter_value_map["slots"]["value"]
+            if "slots" in parameter_value_map
+            else "A1"
+        )
+        instrument: sbol3.Agent = parameter_value_map["instrument"]["value"]
+        samples: labop.SampleArray = parameter_value_map["samples"]["value"]
+
+        # Assume 96 well plate
+        aliquots = get_sample_list(geometry="A1:H12")
+        samples.initial_contents = json.dumps(
+            xr.DataArray(aliquots, dims=("aliquot")).to_dict()
+        )
+
+        # upstream_ex = get_token_source('container', record)
+        # container_spec = upstream_ex.call.lookup().parameter_value_map()['specification']['value']
+
+        container_types = self.resolve_container_spec(container_spec)
+        selected_container_type = self.check_lims_inventory(container_types)
+        container_api_name = LABWARE_MAP[selected_container_type]
+        container_str = get_container_name(container_spec)
+
+        # TODO: need to specify instrument
+        deck = self.get_instrument_deck(instrument)
+        self.markdown_steps += [
+            f"Load {container_str} in {slots} of Deck of pylabrobot instrument"
+        ]
+        self.script_steps += [
+            f"labware{deck} = {instrument.display_id}.load_labware('{container_api_name}')"
+        ]
+
+        # Keep track of instrument configuration
+        if not hasattr(instrument, "configuration"):
+            instrument.configuration = {}
+            for c in get_sample_list(slots):
+                instrument.configuration[c] = container_spec
