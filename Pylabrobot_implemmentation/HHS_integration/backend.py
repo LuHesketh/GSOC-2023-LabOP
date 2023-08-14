@@ -10,21 +10,44 @@ else:
     from typing_extensions import Literal
 
 
-class HamiltonHeatShaker(HeatShakerBackend):
-    """An abstract class for on deck Heater Shaker. wrapping up the commands in async functions that will be called
-    during the robot script"""
+class HeatShakerBackend(ABC):
+    """An abstract class for on the HAMILTON on deck Heater Shaker."""
+
+    async def __init__(self):
+        self.setup_finished = False
+
+    async def setup(self):
+        self.setup_finished = True
+
+    async def stop(self):
+        self.setup_finished = False
+
+    async def assigned_resource_callback(self, resource: Resource):
+    """ Called when a new resource was assigned to the robot.
+
+    This callback will also be called immediately after the setup method has been called for any
+    resources that were assigned to the robot before it was set up. The first resource will always
+    be the deck itself.
+
+    Args:
+      resource: The resource that was assigned to the robot.
+    """
+
+    async def unassigned_resource_callback(self, name: str):
+    """ Called when a resource is unassigned from the robot.
+
+    Args:
+      resource: The name of the resource that was unassigned from the robot.
+    """
 
     @abstractmethod
     async def initialize(self, initializeAlways) -> None:
         "initialize the Heater Shaker"
 
-    self._send_command("TODO")
-
     @abstractmethod
     async def Create_STAR_Device(self, starDevice, usedNode: float) -> None:
         "Create the heater shaker"
 
-    self._send_command("TODO")
 
     @abstractmethod
     async def Begin_Monitoring(
@@ -36,13 +59,29 @@ class HamiltonHeatShaker(HeatShakerBackend):
     ) -> None:
         "Begin monitoring the heater shaker"
 
-    self._send_command("TODO")
 
     @abstractmethod
     async def StartShaker(self, deviceNumber: float, shakingSpeed: float) -> None:
         "Start the heater shaker"
 
     self._send_command("TODO")
+
+    @abstractmethod
+    async def _send_command(self) -> None:
+
+    @abstractmethod
+    async def StartShaker_timed(self, deviceNumber: float, shakingSpeed: float,) -> None:
+
+    @abstractmethod
+    async def Start_temp_control(self, deviceNumber: float) -> None:
+
+    @abstractmethod
+    async def Stop_temp_control(self, deviceNumber: float) -> None:
+
+    @abstractmethod
+    async def Terminate(self, deviceNumber: float) -> None:
+
+
 
     # serialization
 
