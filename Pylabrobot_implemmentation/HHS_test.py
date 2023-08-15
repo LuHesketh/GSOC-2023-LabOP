@@ -96,7 +96,6 @@ if __name__ == "__main__":
         shake_samples(
             device_num,
             hhs_begin_monitoring,
-            hhs_stop_temp_ctrl,
             hhs_start_temp_ctrl,
             hhs_start_shaker_timed,
             hhs_wait_for_shaker,
