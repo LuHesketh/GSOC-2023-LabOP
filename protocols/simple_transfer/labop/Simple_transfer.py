@@ -13,12 +13,15 @@ import xarray as xr
 from tyto import OM
 import tyto
 
-from labop_convert.Pylabrobot import Pylabrobot_specialization
+from labop_convert.pylabrobot.pylabrobot_specialization import (
+    PylabrobotSpecialization,
+)
 
 filename = "".join(__file__.split(".py")[0].split("/")[-1:])
 OUT_DIR = os.path.join(os.path.dirname(__file__), "artifacts")
 if not os.path.exists(OUT_DIR):
     os.mkdir(OUT_DIR)
+
 
 def generate_initialize_subprotocol(doc):
     protocol = labop.Protocol("initialize")
@@ -30,54 +33,58 @@ def generate_initialize_subprotocol(doc):
     )
     PLASMID.name = "DNA TO BE PURIFIEd"
 
-    doc.add(PLASMID)    
-    
+    doc.add(PLASMID)
+
     PROTOCOL_NAME = "initialize_simple_transfer"
-    PROTOCOL_LONG_NAME="initialize_simple_transfer"
+    PROTOCOL_LONG_NAME = "initialize_simple_transfer"
     protocol = labop.Protocol(PROTOCOL_NAME)
     protocol.name = PROTOCOL_LONG_NAME
     protocol.version = "1.2"
     protocol.description = """
  protocol to initialize transfer plasmid and ethanol to a MPE container
     """
-    
+
     doc.add(protocol)
 
-	
-    load_Tiprack_on_deck = protocol.primitive_step("LoadRackOnInstrument", 
+    load_Tiprack_on_deck = protocol.primitive_step(
+        "LoadRackOnInstrument",
         rack=labop.ContainerSpec("tiprack", queryString="cont:HTF_L"),
-        coordinates="(x=100, y=100, z=100)"
+        coordinates="(x=100, y=100, z=100)",
     )
 
-    PLASMID_plate = protocol.primitive_step("LoadContainerOnInstrument",
-            specification=labop.ContainerSpec("PLASMID_plate",
+    PLASMID_plate = protocol.primitive_step(
+        "LoadContainerOnInstrument",
+        specification=labop.ContainerSpec(
+            "PLASMID_plate",
             name="PLASMID_plate",
             queryString="cont:Cos_96_PCR",
             prefixMap={
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
         ),
-        slots="(x=200, y=100, z=100)"
+        slots="(x=200, y=100, z=100)",
     )
 
-    MPE_plate = protocol.primitive_step("LoadContainerOnInstrument",
-            specification=labop.ContainerSpec("MPE_plate",
+    MPE_plate = protocol.primitive_step(
+        "LoadContainerOnInstrument",
+        specification=labop.ContainerSpec(
+            "MPE_plate",
             name="MPE_plate",
             queryString="cont:Cos_96_EZWash",
             prefixMap={
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
         ),
-        slots="(x=400, y=100, z=100)"
+        slots="(x=400, y=100, z=100)",
     )
-    
+
     provision = protocol.primitive_step(
         "Provision",
         resource=PLASMID,
         destination=PLASMID_plate.output_pin("samples"),
         amount=sbol3.Measure(30, OM.microliter),
     )
-        
+
     output1 = protocol.designate_output(
         "PLASMID_plate",
         "http://bioprotocols.org/labop#SampleArray",
@@ -88,11 +95,9 @@ def generate_initialize_subprotocol(doc):
         "MPE_plate",
         "http://bioprotocols.org/labop#SampleArray",
         source=MPE_plate.output_pin("samples"),
-    )		
+    )
 
-
-     ### the provision step creates the reagents as objects and attaches them to the containers where they'll be located
-
+    ### the provision step creates the reagents as objects and attaches them to the containers where they'll be located
 
     return protocol
 
@@ -114,10 +119,8 @@ def generate_protocol():
     labop.import_library("sample_arrays")
     # print("... Imported sample arrays")
 
-
-    
     PROTOCOL_NAME = "simple_transfer"
-    PROTOCOL_LONG_NAME="simple_transfer"
+    PROTOCOL_LONG_NAME = "simple_transfer"
     protocol = labop.Protocol(PROTOCOL_NAME)
     protocol.name = PROTOCOL_LONG_NAME
     protocol.version = "1.2"
@@ -125,36 +128,42 @@ def generate_protocol():
  protocol to transfer plasmid and ethanol to a MPE container
     """
     doc.add(protocol)
-    
+
     initialize_subprotocol = generate_initialize_subprotocol(doc)
 
-    initialization = protocol.primitive_step(
-        initialize_subprotocol
-    )
-
+    initialization = protocol.primitive_step(initialize_subprotocol)
 
     plan_mapping = serialize_sample_format(
-            xr.DataArray(
+        xr.DataArray(
+            [
                 [
                     [
-                        [[(20.0 if source_aliquot == target_aliquot else 0.0) for target_aliquot in ["A1", "A2", "A3"]]]
-                        for source_aliquot in ["A1", "A2", "A3"]
+                        [
+                            (20.0 if source_aliquot == target_aliquot else 0.0)
+                            for target_aliquot in ["A1", "A2", "A3"]
+                        ]
                     ]
+                    for source_aliquot in ["A1", "A2", "A3"]
+                ]
+            ],
+            dims=(
+                f"source_{Strings.CONTAINER}",
+                f"source_{Strings.LOCATION}",
+                f"target_{Strings.CONTAINER}",
+                f"target_{Strings.LOCATION}",
+            ),
+            coords={
+                f"source_{Strings.CONTAINER}": [
+                    initialization.output_pin("PLASMID_plate").name
                 ],
-                dims=(
-                    f"source_{Strings.CONTAINER}",
-                    f"source_{Strings.LOCATION}",
-                    f"target_{Strings.CONTAINER}",
-                    f"target_{Strings.LOCATION}",
-                ),
-                coords={
-                    f"source_{Strings.CONTAINER}": [initialization.output_pin("PLASMID_plate").name],
-                    f"source_{Strings.LOCATION}": ["A1", "A2", "A3"],
-                    f"target_{Strings.CONTAINER}": [initialization.output_pin("MPE_plate").name],
-                    f"target_{Strings.LOCATION}": ["A1", "A2", "A3"],
-                },
-            )
+                f"source_{Strings.LOCATION}": ["A1", "A2", "A3"],
+                f"target_{Strings.CONTAINER}": [
+                    initialization.output_pin("MPE_plate").name
+                ],
+                f"target_{Strings.LOCATION}": ["A1", "A2", "A3"],
+            },
         )
+    )
 
     # The SampleMap specifies the sources and targets, along with the mappings.
     plan = labop.SampleMap(
@@ -175,20 +184,24 @@ def generate_protocol():
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
     )
 
-    protocol.to_dot().render(os.path.join(OUT_DIR, f"{filename}-protocol-graph"))
+    protocol.to_dot().render(
+        os.path.join(OUT_DIR, f"{filename}-protocol-graph")
+    )
 
     protocol_file = os.path.join(OUT_DIR, f"{filename}-protocol.nt")
     with open(protocol_file, "w") as f:
         print(f"Saving protocol [{protocol_file}].")
         f.write(doc.write_string(sbol3.SORTED_NTRIPLES).strip())
 
-
-
     ee = labop.ExecutionEngine(
         out_dir=OUT_DIR,
         failsafe=False,
-        specializations=[pylabrobotSpecialization()],
-        sample_format="xarray"
+        specializations=[
+            PylabrobotSpecialization(
+                filename=os.path.join(OUT_DIR, f"{filename}-pylabrobot.py")
+            )
+        ],
+        sample_format="xarray",
     )
 
     execution = ee.execute(
@@ -198,7 +211,6 @@ def generate_protocol():
         parameter_values=[],
     )
     # ee.prov_observer.to_dot().render(os.path.join(OUT_DIR, f"{filename}-sample-graph"))
-
 
 
 if __name__ == "__main__":
