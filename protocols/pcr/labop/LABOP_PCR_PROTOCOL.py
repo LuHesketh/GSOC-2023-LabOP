@@ -12,6 +12,8 @@ from labop.strings import Strings
 import xarray as xr
 from tyto import OM
 import tyto
+from labop_convert.pylabrobot.pylabrobot_specialization import PylabrobotSpecialization
+
 
 filename = "".join(__file__.split(".py")[0].split("/")[-1:])
 OUT_DIR = os.path.join(os.path.dirname(__file__), "artifacts")
@@ -402,7 +404,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     ee = labop.ExecutionEngine(
         out_dir=OUT_DIR,
         failsafe=False,
-        # specializations=[PylabRobotSpecialization()]
+        specializations=[PylabrobotSpecialization(filename=os.path.join(OUT_DIR, f"{filename}-pylabrobot.py"))],
         sample_format="xarray"
     )
 
