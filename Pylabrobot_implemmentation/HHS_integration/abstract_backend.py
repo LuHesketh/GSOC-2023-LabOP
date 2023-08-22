@@ -68,8 +68,7 @@ class HeatShakerBackend(ABC):
     @abstractmethod
     async def HHS_Terminate(self, deviceNumber: int) -> None:
     
-    @abstractmethod
-    async def HHS_Terminate(self, deviceNumber: int) -> None:
+  
 
 
 

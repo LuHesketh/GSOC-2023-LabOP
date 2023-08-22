@@ -23,10 +23,6 @@ class MPEbackend(ABC):
         self.setup_finished = False
 
   @abstractmethod
-  async def  mpe2_connect_ip(self, deviceId: int, port_number: int, SimulationMode: bool, options: int) -> None:
-    """ connects the MPE via IP address """
-
-  @abstractmethod
   async def  mpe2_connect_com(self, deviceId: int, comPort: int, BaudRate: int , SimulationMode: bool, options: int) -> None:
     """ connects MPE via com ports"""
 
