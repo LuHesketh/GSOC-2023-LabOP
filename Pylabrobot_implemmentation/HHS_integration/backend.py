@@ -21,65 +21,56 @@ class HeatShakerBackend(ABC):
 
     async def stop(self):
         self.setup_finished = False
-
-    async def assigned_resource_callback(self, resource: Resource):
-    """ Called when a new resource was assigned to the robot.
-
-    This callback will also be called immediately after the setup method has been called for any
-    resources that were assigned to the robot before it was set up. The first resource will always
-    be the deck itself.
-
-    Args:
-      resource: The resource that was assigned to the robot.
-    """
-
-    async def unassigned_resource_callback(self, name: str):
-    """ Called when a resource is unassigned from the robot.
-
-    Args:
-      resource: The name of the resource that was unassigned from the robot.
-    """
+  
 
     @abstractmethod
-    async def initialize(self, initializeAlways) -> None:
-        "initialize the Heater Shaker"
-
-    @abstractmethod
-    async def Create_STAR_Device(self, starDevice, usedNode: float) -> None:
-        "Create the heater shaker"
+    async def HHS_CreateStarDevice(self, starDevice: str, ML_Star node: (int [1,2])) -> None:
+        "Creates the heater shaker"
 
 
     @abstractmethod
-    async def Begin_Monitoring(
+    async def HHS_BeginMonitoring(
         self,
-        deviceNumber: float,
-        shakingToleranceRange: float,
-        sampleInterval: float,
-        action: float,
+        deviceNumber: int,
+        shakingToleranceRange: int,
+        sampleInterval: int,
+        action: int,
     ) -> None:
         "Begin monitoring the heater shaker"
 
 
-    @abstractmethod
-    async def StartShaker(self, deviceNumber: float, shakingSpeed: float) -> None:
-        "Start the heater shaker"
-
-    self._send_command("TODO")
 
     @abstractmethod
     async def _send_command(self) -> None:
+    
+    @abstractmethod
+    async def HHS_CreateUSBDevice(self, ML_Star node: (int [1,8])) -> None:
 
     @abstractmethod
-    async def StartShaker_timed(self, deviceNumber: float, shakingSpeed: float,) -> None:
+    async def HHS_StartShaker(self, deviceNumber: int, shakingSpeed: (int [30, 2500])) -> None:
+        "Starts the heater shaker"
 
     @abstractmethod
-    async def Start_temp_control(self, deviceNumber: float) -> None:
+    async def HHS_StartShaker_timed(self, deviceNumber: int, shakingSpeed: (int [30, 2500]), shakingTime: (int [1, 30000])) -> None:
 
     @abstractmethod
-    async def Stop_temp_control(self, deviceNumber: float) -> None:
+    async def HHS_StartTempCtrl(self, deviceNumber: int) -> None:
+    
+    @abstractmethod
+    async def HHS_WaitForTempCtrl(self, deviceNumber: int) -> None:
 
     @abstractmethod
-    async def Terminate(self, deviceNumber: float) -> None:
+    async def HHS_WaitForShaker(self, deviceNumber: int, temperature:(float [0.0, 105.0]), waitForTempReached:((Int) -> Bool)) -> None:
+
+    @abstractmethod
+    async def HHS_StopTempCtrl(self, deviceNumber: int) -> None:
+
+    @abstractmethod
+    async def HHS_Terminate(self, deviceNumber: int) -> None:
+    
+    @abstractmethod
+    async def HHS_Terminate(self, deviceNumber: int) -> None:
+
 
 
 

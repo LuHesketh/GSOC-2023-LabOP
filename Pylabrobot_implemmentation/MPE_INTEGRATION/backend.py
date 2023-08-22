@@ -13,41 +13,58 @@ class MPEbackend(ABC):
   """ An abstract class for a plate reader. Plate readers are devices that can read luminescence,
   absorbance, or fluorescence from a plate. """
 
-  @abstractmethod
-  async def  mpe2_connect_ip(self, deviceId, port_number: float, simulation_mode, options: int) -> None:
-    """ Set up the plate reader. This should be called before any other methods. """
+  async def __init__(self):
+        self.setup_finished = False
+
+    async def setup(self):
+        self.setup_finished = True
+
+    async def stop(self):
+        self.setup_finished = False
 
   @abstractmethod
-  async def  mpe2_connect_com(self, deviceId, com_port: float, baud_rat: float, simulation_mode, options: int) -> None:
-    """ Close all connections to the plate reader and make sure setup() can be called again. """
+  async def  mpe2_connect_ip(self, deviceId: int, port_number: int, SimulationMode: bool, options: int) -> None:
+    """ connects the MPE via IP address """
 
   @abstractmethod
-  async def  mpe2_initialize(self, deviceId) -> None:
-    """ Close all connections to the plate reader and make sure setup() can be called again. """
+  async def  mpe2_connect_com(self, deviceId: int, comPort: int, BaudRate: int , SimulationMode: bool, options: int) -> None:
+    """ connects MPE via com ports"""
 
   @abstractmethod
-  async def open(self) -> None:
-    """ Open the plate reader. Also known as plate out. """
+  async def  mpe2_Initialize(self, deviceId: int) -> None:
+    """ initialize MPE """
+  
+  @abstractmethod
+  async def  mpe2_FilterPlatePlaced(self, deviceId: int, FilterHeight: float, NozzleHeight: float) -> None:
+    """ instanciates that a filter plate has been placed at the MPE deck """
 
   @abstractmethod
-  async def close(self) -> None:
-    """ Close the plate reader. Also known as plate in. """
+  async def  mpe2_FilterPlateRemoved(self, deviceId: int) -> None:
+    """instanciates that a filter plate has been removed from the MPE deck  """
+
 
   @abstractmethod
-  async def read_luminescence(self, focal_height: float) -> List[List[float]]:
-    """ Read the luminescence from the plate reader. This should return a list of lists, where the
-    outer list is the columns of the plate and the inner list is the rows of the plate. """
+  async def  mpe2_ClampFilterPlate(self, deviceId: int) -> None:
+    """ command for the MPE deck to clamp plate that has been placed """
 
   @abstractmethod
-  async def read_absorbance(
-    self,
-    wavelength: int,
-    report: Literal["OD", "transmittance"]
-  ) -> List[List[float]]:
-    """ Read the absorbance from the plate reader. This should return a list of lists, where the
-    outer list is the columns of the plate and the inner list is the rows of the plate. """
+  async def  mpe2_RetrieveFilterPlate(self, deviceId: int) -> None:
+    """ retrieves filter plate back to deck for next operation"""
+  
+  @abstractmethod
+  async def  mpe2_Disconnect(self, deviceId: int) -> None:
+    """ disconnects MPE2"""
 
-  # Copied from liquid_handling/backend.py. Maybe we should create a shared base class?
+  @abstractmethod
+  async def  mpe2_ProcessFilterToWasteContainer(self, deviceId: int, ControlPoints: str,ReturnPlateToIntegrationArea: bool, WasteContainerID: int, DisableVacuumCheck: bool) -> None:
+    """ activates MPE air pump and processes filter plate contents through filters"""
+
+  @abstractmethod
+  async def  mpe2_CollectionPlatePlaced(self, deviceId: int, CollectionPlateHeight: float, OffsetFromNozzles: float) -> None:
+    """ disconnects MPE2"""
+
+
+  # Copied from liquid_handling/backend.py.
 
   def serialize(self):
     """ Serialize the backend so that an equivalent backend can be created by passing the dict
