@@ -62,9 +62,9 @@ def generate_initialize_subprotocol(doc):
     Ethanol_container = protocol.primitive_step(
         "LoadContainerOnInstrument",
         specification=labop.ContainerSpec(
-            "PLASMID_plate",
-            name="PLASMID_plate",
-            queryString="cont:Cos_96_PCR",
+            "Ethanol container",
+            name="Ethanol container",
+            queryString="cont:Corning_96_DW_1mL",
             prefixMap={
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
@@ -83,9 +83,9 @@ def generate_initialize_subprotocol(doc):
         specification=labop.ContainerSpec(
             "PLASMID_plate",
             name="PLASMID_plate",
-            queryString="cont:Cos_96_PCR",
+            queryString="cont:Corning96WellPlate360uLFlat",
             prefixMap={
-                "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
+                "cont": "https://sift.net/container-ontology/container-ontology#Corning96WellPlate360uLFlat"
             },
         ),
         slots="(x=200, y=100, z=100)",
@@ -94,9 +94,9 @@ def generate_initialize_subprotocol(doc):
     water_container = protocol.primitive_step(
         "LoadContainerOnInstrument",
         specification=labop.ContainerSpec(
-            "MPE_plate",
-            name="MPE_plate",
-            queryString="cont:Cos_96_EZWash",
+            "water container",
+            name="water container",
+            queryString="cont:Corning_96_DW_1mL",
             prefixMap={
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
@@ -109,7 +109,7 @@ def generate_initialize_subprotocol(doc):
         specification=labop.ContainerSpec(
             "MPE_plate",
             name="MPE_plate",
-            queryString="cont:Cos_96_EZWash",
+            queryString="cont:Corning_96_Filter_plate",
             prefixMap={
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },

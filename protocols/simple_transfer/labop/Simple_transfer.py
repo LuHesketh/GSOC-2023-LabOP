@@ -41,7 +41,7 @@ def generate_initialize_subprotocol(doc):
     protocol.name = PROTOCOL_LONG_NAME
     protocol.version = "1.2"
     protocol.description = """
- protocol to initialize transfer plasmid and ethanol to a MPE container
+ protocol to initialize transfer to a MPE container
     """
 
     doc.add(protocol)
