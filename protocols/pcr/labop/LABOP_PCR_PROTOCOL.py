@@ -54,58 +54,116 @@ def generate_initialize_subprotocol(doc):
     protocol.description = """
  protocol to initialize transfer plasmid and ethanol to a MPE container for ethanol washes
     """
-    
+
     doc.add(protocol)
-    
-        
-    PLASMID_container = protocol.primitive_step(
-        "EmptyContainer",
-        specification=labop.ContainerSpec(
-            "PLASMID",
-            name="PLASMID",
-            queryString="cont:StockReagent",
-            prefixMap={
-                "cont": "https://sift.net/container-ontology/container-ontology#"
-            },
-        ),
-    )
+
 
 
     Ethanol_container = protocol.primitive_step(
-        "EmptyContainer",
+        "LoadContainerOnInstrument",
         specification=labop.ContainerSpec(
-            "ethanol_for_DNA_washes",
-            name="ethanol for DNA washes",
-            queryString="cont:StockReagent",
+            "PLASMID_plate",
+            name="PLASMID_plate",
+            queryString="cont:Cos_96_PCR",
             prefixMap={
-                "cont": "https://sift.net/container-ontology/container-ontology#"
+                "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
         ),
+        slots="(x=200, y=100, z=100)",
+    )
+
+    load_Tiprack_on_deck = protocol.primitive_step(
+        "LoadRackOnInstrument",
+        rack=labop.ContainerSpec("tiprack", queryString="cont:HTF_L"),
+        coordinates="(x=100, y=100, z=100)",
+    )
+
+    PLASMID_plate = protocol.primitive_step(
+        "LoadContainerOnInstrument",
+        specification=labop.ContainerSpec(
+            "PLASMID_plate",
+            name="PLASMID_plate",
+            queryString="cont:Cos_96_PCR",
+            prefixMap={
+                "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
+            },
+        ),
+        slots="(x=200, y=100, z=100)",
     )
 
     water_container = protocol.primitive_step(
-        "EmptyContainer",
+        "LoadContainerOnInstrument",
         specification=labop.ContainerSpec(
-            "WATER_For_cleanup_after_ethanol_washing_steps",
-            name="water_container",
-            queryString="cont:StockReagent",
+            "MPE_plate",
+            name="MPE_plate",
+            queryString="cont:Cos_96_EZWash",
             prefixMap={
-                "cont": "https://sift.net/container-ontology/container-ontology#"
+                "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
         ),
+        slots="(x=400, y=100, z=100)",
     )
 
-
-    MPE_container = protocol.primitive_step(
-        "EmptyContainer",
+    MPE_plate = protocol.primitive_step(
+        "LoadContainerOnInstrument",
         specification=labop.ContainerSpec(
-            "MPE_container",
-            name="MPE_container",
-            queryString="cont:StockReagent",
+            "MPE_plate",
+            name="MPE_plate",
+            queryString="cont:Cos_96_EZWash",
             prefixMap={
-                "cont": "https://sift.net/container-ontology/container-ontology#"
+                "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
         ),
+        slots="(x=400, y=100, z=100)",
+    )
+
+    provision = protocol.primitive_step(
+        "Provision",
+        resource=PLASMID,
+        destination=PLASMID_plate.output_pin("samples"),
+        amount=sbol3.Measure(30, OM.microliter),
+    )
+
+    provision = protocol.primitive_step(
+        "Provision",
+        resource=Ethanol,
+        destination=Ethanol_container.output_pin("samples"),
+        amount=sbol3.Measure(5000, OM.microliter),
+    )
+
+    provision = protocol.primitive_step(
+        "Provision",
+        resource=water,
+        destination=water_container.output_pin("samples"),
+        amount=sbol3.Measure(5000, OM.microliter),
+
+    )
+
+  
+
+    output1 = protocol.designate_output(
+        "PLASMID_plate",
+        "http://bioprotocols.org/labop#SampleArray",
+        source=PLASMID_plate.output_pin("samples"),
+    )
+
+    output2 = protocol.designate_output(
+        "MPE_plate",
+        "http://bioprotocols.org/labop#SampleArray",
+        source=MPE_plate.output_pin("samples"),
+    )
+
+    output3 = protocol.designate_output(
+        "Ethanol_container",
+        "http://bioprotocols.org/labop#SampleArray",
+        source=Ethanol_container.output_pin("samples"),
+    )
+
+    output4 = protocol.designate_output(
+        "water_container",
+        "http://bioprotocols.org/labop#SampleArray",
+        source=water_container.output_pin("samples")
+
     )
     shaking_incubator = sbol3.Component("shaking_incubator", "")
     shaking_incubator.name = "Shaking incubator"   
@@ -123,71 +181,22 @@ def generate_initialize_subprotocol(doc):
         ),
     )
 
-    provision = protocol.primitive_step(
-        "Provision",
-        resource=PLASMID,
-        destination=PLASMID_container.output_pin("samples"),
-        amount=sbol3.Measure(5000, OM.microliter),
-    )    
-        
-    
-    provision = protocol.primitive_step(
-        "Provision",
-        resource=Ethanol,
-        destination=Ethanol_container.output_pin("samples"),
-        amount=sbol3.Measure(5000, OM.microliter),
-    )
-
-    provision = protocol.primitive_step(
-        "Provision",
-        resource=water,
-        destination=water_container.output_pin("samples"),
-        amount=sbol3.Measure(5000, OM.microliter),
-
-    )
-
-    output1 = protocol.designate_output(
-        "PLASMID_container",
-        "http://bioprotocols.org/labop#SampleArray",
-        source=PLASMID_container.output_pin("samples"),
-    )
-
-    output2 = protocol.designate_output(
-        "MPE_container",
-        "http://bioprotocols.org/labop#SampleArray",
-        source=MPE_container.output_pin("samples"),
-    )
-
-    output3 = protocol.designate_output(
-        "Ethanol_container",
-        "http://bioprotocols.org/labop#SampleArray",
-        source=Ethanol_container.output_pin("samples"),
-    )
-
-    output4 = protocol.designate_output(
+    output5 = protocol.designate_output(
         "shaking_incubator",
         "http://bioprotocols.org/labop#SampleArray",
-        source=shaking_incubator.output_pin("samples"),
+        source=shaking_incubator.output_pin("samples")
 
-    )
-
-    output5 = protocol.designate_output(
-        "water_container",
-        "http://bioprotocols.org/labop#SampleArray",
-        source=water_container.output_pin("samples"),
-
-    )
     return protocol
 
 #here the PLASMID would already be inside the MPE2 and the pressure pump would be activated
 #pushing the PLASMID through the collumns inside the container
 #a sub-protocol should be made to represent this step
 def generate_MPE_subprotocol(doc):
-    protocol = labop.Protocol("MPE_overpressure")
+    protocol = labop.Protocol("Activate Air pump")
     doc.add(protocol)
     # mpe2_filter_plate_placed,
     #         mpe2_clamp_filter_plate,
-    #         mpe2_start_mpe_vacuum,
+    #         
     #         mpe2_process_filter_to_waste_container,
     #         mpe2_stop_vacuum,
     #         mpe2_filter_plate_removed
@@ -231,6 +240,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     #     - move filter plate to heater shaker using robotic grippers
     #     - do shaking steps
     #     - retrieve plate manually from heater shaker    """
+
     doc.add(protocol)
     
     initialize_subprotocol = generate_initialize_subprotocol(doc)
