@@ -259,11 +259,24 @@ class PylabrobotSpecialization(BehaviorSpecialization):
         apilevel = self.apilevel
         self.markdown += f"# {protocol.name}\n"
         self.script += (
-            "from opentrons import protocol_api\n\n"
-            f"metadata = {{'apiLevel': '{apilevel}',\n"
-            f"            'description': '{protocol.description}',\n"
-            f"            'protocolName': '{protocol.name}'}} \n\n"
-            "def run(protocol: protocol_api.ProtocolContext):\n"
+           """import asyncio
+
+from pylabrobot.liquid_handling import LiquidHandler
+from pylabrobot.liquid_handling.backends.simulation.simulator_backend import (
+    SimulatorBackend,
+)
+from pylabrobot.resources import Cos_96_EZWash, Cos_96_PCR, HTF_L, Coordinate
+from pylabrobot.resources.hamilton import STARLetDeck
+
+backend = SimulatorBackend()
+deck = STARLetDeck()
+sb = SimulatorBackend(open_browser=False)
+lh = LiquidHandler(backend=sb, deck=STARLetDeck())
+
+
+async def LiquidHandler_setup():
+    await lh.setup()
+"""
         )
         self.data = []
 
@@ -451,7 +464,7 @@ class PylabrobotSpecialization(BehaviorSpecialization):
         rack_str = f"`{rack.name}`" if rack.name else rack.queryString
         text = f"Fill {amount} of {resource.name} into {container_str} located in {coords} of {rack_str}"
         self.markdown_steps += [text]
-
+        #write pylabrobot correspondence
     # write correspondence for transfer primitive
     def transfer_to(
         self, record: labop.ActivityNodeExecution, ex: labop.ProtocolExecution
@@ -566,7 +579,7 @@ class PylabrobotSpecialization(BehaviorSpecialization):
         destination_str = destination.mask
         for c_source in source.get_coordinates():
             for c_destination in destination.get_coordinates():
-                self.script_steps += [
+                self.script_steps += [ # make it a list with 5 elements (pick up, aspirate, dispense, return tips)
                     f"{pipette.display_id}.transfer({value}, {source_name}['{c_source}'], {destination_name}['{c_destination}'])  {comment}"
                 ]
 
@@ -577,8 +590,8 @@ class PylabrobotSpecialization(BehaviorSpecialization):
         results = {}
         call = record.call.lookup()
         parameter_value_map = call.parameter_value_map()
-        destination = parameter_value_map["destination"]["value"]
-        source = parameter_value_map["source"]["value"]
+        destination = parameter_value_map["destination"]["value"] #those are gonna be sample arrays
+        source = parameter_value_map["source"]["value"]#those are gonna be sample arrays
         plan = parameter_value_map["plan"]["value"]
         temperature = parameter_value_map["temperature"]["value"]
         value = parameter_value_map["amount"]["value"].value
@@ -599,7 +612,7 @@ class PylabrobotSpecialization(BehaviorSpecialization):
         else:
             raise Exception(f'Invalid input pin "source" for Transfer.')
 
-        # Map the source container to a variable name in the OT2 api script
+        #############trace the source container to a variable name in the pylabrobot script######## 
         source_name = None
         for deck, labware in self.configuration.items():
             if labware == source_container:
@@ -635,14 +648,28 @@ class PylabrobotSpecialization(BehaviorSpecialization):
             )
         pipette = self.configuration["left"]
 
+        source.container_type
+        destination.container_type
+        source.container_type.lookup
+
+
         source_str = source.mask
         destination_str = destination.mask
         for c_source in get_sample_list(source.mask):
             for c_destination in get_sample_list(destination.mask):
-                self.script_steps += [
-                    f"{pipette.display_id}.transfer({value}, {source_name}['{c_source}'], {destination_name}['{c_destination}'])"
-                ]
-
+                self.script_steps += # make it a list with 5 elements (pick up, aspirate, dispense, return tips) this string when constructed will substitute variables declared by values on the protocol
+                    f"""async def liquid_handling_sequence():
+    await lh.pick_up_tips({primitive_tip_rack}[{source_str}])
+      lh
+    await lh.aspirate({source}[{source_str}],
+        vols={value},
+        flow_rates={100},
+        end_delay=0.5,
+        offsets=Coordinate(1, 2, 3))
+    await lh.dispense({destination}[{destination_str}], vols={value})
+    await lh.return_tips() """
+# take information present in the primitive and construct string to be 
+# make it a list with 5 elements (pick up, aspirate, dispense, return tips)
     def define_rack(
         self, record: labop.ActivityNodeExecution, ex: labop.ProtocolExecution
     ):

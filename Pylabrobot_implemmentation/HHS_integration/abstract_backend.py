@@ -37,14 +37,13 @@ class HeatShakerBackend(ABC):
         action: int,
     ) -> None:
         "Begin monitoring the heater shaker"
-w
 
 
     @abstractmethod
     async def _send_command(self) -> None:
     
     @abstractmethod
-    async def HHS_CreateUSBDevice(self, ML_Star node: (int [1,8])) -> None:
+    async def Create_STAR_Device(self, deviceNumber:int, node: (int [1,8])) -> None:
 
     @abstractmethod
     async def HHS_StartShaker(self, deviceNumber: int, shakingSpeed: (int [30, 2500])) -> None:

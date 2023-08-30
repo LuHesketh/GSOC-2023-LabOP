@@ -12,7 +12,7 @@ from labop.strings import Strings
 import xarray as xr
 from tyto import OM
 import tyto
-from labop_convert.pylabrobot.pylabrobot_specialization import PylabrobotSpecialization
+from labop_convert.Pylabrobot.pylabrobot_specialization import PylabrobotSpecialization
 
 
 filename = "".join(__file__.split(".py")[0].split("/")[-1:])
@@ -62,7 +62,7 @@ def generate_initialize_subprotocol(doc):
     Ethanol_container = protocol.primitive_step(
         "LoadContainerOnInstrument",
         specification=labop.ContainerSpec(
-            "Ethanol container",
+            "Ethanol_container",
             name="Ethanol container",
             queryString="cont:Corning_96_DW_1mL",
             prefixMap={
@@ -94,7 +94,7 @@ def generate_initialize_subprotocol(doc):
     water_container = protocol.primitive_step(
         "LoadContainerOnInstrument",
         specification=labop.ContainerSpec(
-            "water container",
+            "water_container",
             name="water container",
             queryString="cont:Corning_96_DW_1mL",
             prefixMap={
@@ -184,7 +184,7 @@ def generate_initialize_subprotocol(doc):
     output5 = protocol.designate_output(
         "shaking_incubator",
         "http://bioprotocols.org/labop#SampleArray",
-        source=shaking_incubator.output_pin("samples")
+        source=shaking_incubator.output_pin("samples"))
 
     return protocol
 
@@ -192,7 +192,7 @@ def generate_initialize_subprotocol(doc):
 #pushing the PLASMID through the collumns inside the container
 #a sub-protocol should be made to represent this step
 def generate_MPE_subprotocol(doc):
-    protocol = labop.Protocol("Activate Air pump")
+    protocol = labop.Protocol("Activate_Air_pump")
     doc.add(protocol)
     # mpe2_filter_plate_placed,
     #         mpe2_clamp_filter_plate,

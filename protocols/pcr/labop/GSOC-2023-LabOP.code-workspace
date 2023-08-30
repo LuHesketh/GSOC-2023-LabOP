@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../pyhamilton"
+		},
+		{
+			"path": "../../../../pylabrobot"
+		}
+	],
+	"settings": {}
+}
