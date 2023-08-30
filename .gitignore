@@ -1,3 +1,13 @@
 **/sample_graph_*
 .venv
 **/artifacts/**
+labop.egg-info/dependency_links.txt
+labop.egg-info/PKG-INFO
+labop.egg-info/requires.txt
+labop.egg-info/SOURCES.txt
+labop.egg-info/top_level.txt
+pylabrobot_convert.egg-info/dependency_links.txt
+pylabrobot_convert.egg-info/PKG-INFO
+pylabrobot_convert.egg-info/SOURCES.txt
+pylabrobot_convert.egg-info/top_level.txt
+pylabrobot_convert/__pycache__/pylabrobot_specialization.cpython-311.pyc

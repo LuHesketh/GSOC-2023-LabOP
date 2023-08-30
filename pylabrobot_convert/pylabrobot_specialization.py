@@ -17,7 +17,7 @@ l.setLevel(logging.ERROR)
 
 
 container_ontology_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), "../../labop/container-ontology.ttl"
+    os.path.dirname(os.path.realpath(__file__)), "container-ontology.ttl"
 )
 ContO = tyto.Ontology(
     path=container_ontology_path,
@@ -58,12 +58,12 @@ LABWARE_MAP = {
     # this is for TIP carriers (C:\Users\Luiza\pylabrobot\pylabrobot\resources\ml_star\tip_carriers.py)
     # HAMILTON ML star tip carriers
     ContO[
-        "ML STAR Tip carrier with 5 4ml tip with filter racks landscape"
+        "MLSTARTipCarrier4ml"
     ]: "TIP_CAR_120BC_4mlTF_A00",
     ContO[
         "ML STAR Tip carrier with 5 5ml tip racks landscape"
     ]: "TIP_CAR_120BC_5mlT_A00",
-         ContO["Corning96WellPlate360uLFlat"]: "TIP_CAR_288_A00",
+         ContO["Corning 96 Well Plate"]: "TIP_CAR_288_A00",
     #     ContO["ML STAR Tip carrier for 3 Racks with 96 Tips portrait [revision B00]"]: "TIP_CAR_288_B00",
     #     ContO["ML STAR Tip carrier for 3 Racks with 96 Tips portrait [revision C00]"]: "TIP_CAR_288_C00",
     #     ContO["ML STAR Tip carrier with 3 high volume tip with filter racks portrait [revision A00]"]: "TIP_CAR_288_HTF_A00",
@@ -110,12 +110,12 @@ LABWARE_MAP = {
     #     ContO["Corning Costar 10 ul plate [1536]"]: "Cos_1536_10ul",
     #     ContO["Corning Costar deep well plate [384]"]: "Cos_384_DW",
     #     ContO["Corning Costar PCR plate [384]"]: "Cos_384_PCR",
-         ContO["Corning_96_DW_1mL"]: "Cos_96_DW_1mL",
+         ContO["Corning Costar 1 mL deep well plate with 96 wells"]: "Cos_96_DW_1mL",
     #     ContO["Corning Costar 2 mL deep well plate [96]"]: "Cos_96_DW_2mL",
     #     ContO["Corning Costar 500ul deep well plate [96]"]: "Cos_96_DW_500ul",
-         ContO["Corning_96_EZWash_plate"]: "Cos_96_EZWash",
-         ContO["Corning96WellPlate360uLFlat"]: "Cos_96_FL",
-         ContO["Corning_96_Filter_plate"]: "Cos_96_Filter",
+         ContO["Corning Costar EZwash plate with 96 wells"]: "Cos_96_EZWash",
+         ContO["Corning 96 Well Plate 360 uL Flat"]: "Cos_96_FL",
+         ContO["Corning Costar filter plate with 96 wells"]: "Cos_96_Filter",
     #     ContO["Corning Costar Half area plate [96]"]: "Cos_96_HalfArea",
     #     ContO["Corning Costar filter plate [96]"]: "Cos_96_Filter",
     #     ContO["Corning Costar PCR plate [96]"]: "Cos_96_PCR",
@@ -128,7 +128,7 @@ LABWARE_MAP = {
     # #""" HAMILTON ML Star tips """
     #     ContO["Tip Rack 24x 4ml Tip with Filter landscape oriented"]: "FourmlTF_L",
     #     ContO["Tip Rack 24x 5ml Tip landscape oriented"]: "FivemlT_L",
-         ContO["TipRack961000ulfilter"]: "HTF_L",
+         ContO["ML STAR Tip Rack with 96 1000ul High Volume Tip with filter"]: "HTF_L",
     #     ContO["Tip Rack with 96 1000ul High Volume Tip"]: "HT_L",
     #     ContO["Tip Rack with 96 10ul Low Volume Tip with filter"]: "LTF_L",
     #     ContO["Tip Rack with 96 10ul Low Volume Tip"]: "LT_L",
@@ -652,13 +652,12 @@ async def LiquidHandler_setup():
         destination.container_type
         source.container_type.lookup
 
-
+# make it a list with 5 elements (pick up, aspirate, dispense, return tips) this string when constructed will substitute variables declared by values on the protocol
         source_str = source.mask
         destination_str = destination.mask
         for c_source in get_sample_list(source.mask):
             for c_destination in get_sample_list(destination.mask):
-                self.script_steps += # make it a list with 5 elements (pick up, aspirate, dispense, return tips) this string when constructed will substitute variables declared by values on the protocol
-                    f"""async def liquid_handling_sequence():
+                self.script_steps += f"""async def liquid_handling_sequence():
     await lh.pick_up_tips({primitive_tip_rack}[{source_str}])
       lh
     await lh.aspirate({source}[{source_str}],

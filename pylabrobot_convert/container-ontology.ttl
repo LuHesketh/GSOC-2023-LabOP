@@ -636,7 +636,7 @@ cont:Corning_96_EZWash_plate rdf:type owl:Class ;
 ###  https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py 
 cont:Corning_96_Filter_plate rdf:type owl:Class ;
                     rdfs:subClassOf cont:Plate ;
-                    rdfs:label "Corning Costar EZwash plate with 96 wells" .
+                    rdfs:label "Corning Costar filter plate with 96 wells" .
 
 ###  https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py 
 cont:Corning_96_DW_1mL rdf:type owl:Class ;
@@ -1251,7 +1251,7 @@ cont:Biorad96WellPCRPlate rdf:type owl:NamedIndividual ,
 cont:Centrifuge rdf:type owl:NamedIndividual .
 
 ###  https://sift.net/container-ontology/container-ontology#Corning96WellPlate360uLFlat
-cont:Corning96WellPlate360uLFlat rdf:type owl:NamedIndividual ,
+cont:Corning96WellPlate360uL rdf:type owl:NamedIndividual ,
                                           cont:Plate96Well ;
                                  rdfs:label "Corning 96 Well Plate" .
 
