@@ -12,7 +12,7 @@ from labop.strings import Strings
 import xarray as xr
 from tyto import OM
 import tyto
-from labop_convert.Pylabrobot.pylabrobot_specialization import PylabrobotSpecialization
+from pylabrobot_convert.pylabrobot_specialization import PylabrobotSpecialization
 
 
 filename = "".join(__file__.split(".py")[0].split("/")[-1:])
