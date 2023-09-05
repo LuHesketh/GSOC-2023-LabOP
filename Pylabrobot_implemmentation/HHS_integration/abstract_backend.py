@@ -43,7 +43,7 @@ class HeatShakerBackend(ABC):
     async def _send_command(self) -> None:
     
     @abstractmethod
-    async def Create_STAR_Device(self, deviceNumber:int, node: (int [1,8])) -> None:
+    async def Create_STAR_Device(self, deviceNumber:int, node: (int [1,8]), star_device:"ML_STAR") -> None:
 
     @abstractmethod
     async def HHS_StartShaker(self, deviceNumber: int, shakingSpeed: (int [30, 2500])) -> None:
@@ -53,24 +53,19 @@ class HeatShakerBackend(ABC):
     async def HHS_StartShaker_timed(self, deviceNumber: int, shakingSpeed: (int [30, 2500]), shakingTime: (int [1, 30000])) -> None:
 
     @abstractmethod
-    async def HHS_StartTempCtrl(self, deviceNumber: int) -> None:
+    async def HHS_StartTempCtrl(self, deviceNumber: int, temp:(float [0.0, 105.0]), wait_for_temp_reached:(int)) -> None:
     
     @abstractmethod
     async def HHS_WaitForTempCtrl(self, deviceNumber: int) -> None:
 
     @abstractmethod
-    async def HHS_WaitForShaker(self, deviceNumber: int, temperature:(float [0.0, 105.0]), waitForTempReached:((Int) -> Bool)) -> None:
+    async def HHS_WaitForShaker(self, deviceNumber: int) -> None:
 
     @abstractmethod
     async def HHS_StopTempCtrl(self, deviceNumber: int) -> None:
 
     @abstractmethod
     async def HHS_Terminate(self, deviceNumber: int) -> None:
-    
-  
-
-
-
 
     # serialization
 
