@@ -1,6 +1,7 @@
 import asyncio
 
-from pylabrobot.resources import Cos_96_EZWash, Coordinate, STARLetDeck
+from pylabrobot.resources import Cos_96_EZWash, , STARLetDeck
+
 from GSOC-2023-LabOP.MPE_INTEGRATION import MPEbackend
 from GSOC-2023-LabOP.MPE_INTEGRATION import MPEbackend
 
