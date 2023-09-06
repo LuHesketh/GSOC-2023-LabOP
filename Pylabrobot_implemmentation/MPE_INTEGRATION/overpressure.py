@@ -42,3 +42,6 @@ async def MPE_overpressure():
   mpe2_FilterPlatePlaced(self, 1, FilterHeight, NozzleHeight)
   mpe2_ProcessFilterToWasteContainer(self, 1, ControlPoints,ReturnPlateToIntegrationArea, WasteContainerID, DisableVacuumCheck)
   mpe2_FilterPlateRemoved(self, 1) 
+
+asyncio .run(__init__())
+asyncio .run(MPE_overpressure())
