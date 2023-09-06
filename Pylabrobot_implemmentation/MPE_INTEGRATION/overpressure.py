@@ -14,6 +14,8 @@ deck=STARLetDeck()
 
 async def __init__():
   await MPE.setup()
+  await MPE.mpe2_connect_com(MPE, 1, comPort, BaudRate, SimulationMode, options)
+  await MPE.mpe2_Initialize(MPE, 1)
 
 #assign the MPE plate
 MPE_plate = Cos_96_EZWash(name="MPE_plate")
@@ -35,11 +37,11 @@ DisableVacuumCheck = 1
 
 
 async def MPE_overpressure():
-  MPE.mpe2_connect_com(self, 1, comPort, BaudRate, SimulationMode, options)
-  MPE.mpe2_Initialize(self, 1)
-  MPE.mpe2_FilterPlatePlaced(self, 1, FilterHeight, NozzleHeight)
-  MPE.mpe2_ProcessFilterToWasteContainer(self, 1, ControlPoints,ReturnPlateToIntegrationArea, WasteContainerID, DisableVacuumCheck)
-  MPE.mpe2_FilterPlateRemoved(self, 1) 
+  await MPE.mpe2_FilterPlatePlaced(MPE, 1, FilterHeight, NozzleHeight)
+  await MPE.mpe2_ProcessFilterToWasteContainer(MPE, 1, ControlPoints,ReturnPlateToIntegrationArea, WasteContainerID, DisableVacuumCheck)
+  await MPE.mpe2_FilterPlateRemoved(MPE, 1) 
+
+
 
 asyncio .run(__init__())
 asyncio .run(MPE_overpressure())
