@@ -23,7 +23,7 @@ class STARDEVICE(HeatShakerBackend):
   async def CreateStarDevice(self, node):
     self.ser = serial.Serial(ML_Star= "ML_Star", node = 1)
     ML_Star= "ML_Star"
-    node = 1
+    node
     cmd =f"T1QU"
     cmd =f"T1QW"
     cmd =f"T1RF"
