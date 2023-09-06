@@ -7,18 +7,16 @@ from GSOC-2023-LabOP.MPE_INTEGRATION import MPEbackend
 from GSOC-2023-LabOP.MPE_INTEGRATION import MPE
 from GSOC-2023-LabOP.MPE_INTEGRATION import MPE
 
-backend =MPE()
-
+backend =MPEbackend()
+MPE = MPE(backend=backend, deck=STARLetDeck())
 deck=STARLetDeck()
 
 
 async def __init__():
-  await lh.setup()
+  await MPE.setup()
 
 #assign the MPE plate
 MPE_plate = Cos_96_EZWash(name="MPE_plate")
-lh.deck.assign_child_resource(MPE_plate, location=Coordinate(x=400, y=100, z=100))
-
 
 #provide information necessary for protocol
 
@@ -37,11 +35,11 @@ DisableVacuumCheck = 1
 
 
 async def MPE_overpressure():
-  mpe2_connect_com(self, 1, comPort, BaudRate, SimulationMode, options)
-  mpe2_Initialize(self, 1)
-  mpe2_FilterPlatePlaced(self, 1, FilterHeight, NozzleHeight)
-  mpe2_ProcessFilterToWasteContainer(self, 1, ControlPoints,ReturnPlateToIntegrationArea, WasteContainerID, DisableVacuumCheck)
-  mpe2_FilterPlateRemoved(self, 1) 
+  MPE.mpe2_connect_com(self, 1, comPort, BaudRate, SimulationMode, options)
+  MPE.mpe2_Initialize(self, 1)
+  MPE.mpe2_FilterPlatePlaced(self, 1, FilterHeight, NozzleHeight)
+  MPE.mpe2_ProcessFilterToWasteContainer(self, 1, ControlPoints,ReturnPlateToIntegrationArea, WasteContainerID, DisableVacuumCheck)
+  MPE.mpe2_FilterPlateRemoved(self, 1) 
 
 asyncio .run(__init__())
 asyncio .run(MPE_overpressure())
