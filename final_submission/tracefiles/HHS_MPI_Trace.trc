@@ -1,0 +1,128 @@
+2023-08-14 12:24:44> SYSTEM : Analyze method - start; Method file C:\Program Files (x86)\Hamilton\Methods\gripperstest.hsl
+2023-08-14 12:24:44> Microlab® STARlet : Communication - progress; Connection to instrument is created.
+2023-08-14 12:24:46> SYSTEM : Analyze method - complete; 
+2023-08-14 12:24:46> SYSTEM : Start method - start; 
+2023-08-14 12:24:46> SYSTEM : Start method - progress; User name: Hamilton
+2023-08-14 12:24:46> SYSTEM : Start method - progress; Phoenix software version: 4.5.0.7977
+2023-08-14 12:24:46> SYSTEM : Start method - progress; Database version: Standard
+2023-08-14 12:24:46> SYSTEM : Start method - progress; Sample tracking: Off
+2023-08-14 12:24:46> SYSTEM : Start method - progress; Vector Database: On
+2023-08-14 12:24:46> SYSTEM : Start method - progress; Vector Database connection: Database 'HamiltonVectorDB' on Microsoft SQL Server 'LOCALHOST\HAMILTON' with user 'Hamilton'
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - start;
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Microlab® STARlet software version: 4.5.0.5217
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Serial number of Instrument: 617I
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of main module: 8.6S 82 2020-09-04  
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of 1000µl channels: 4.0S f 2020-07-31, 4.0S f 2020-07-31, 4.0S f 2020-07-31, 4.0S f 2020-07-31, 4.0S f 2020-07-31, 4.0S f 2020-07-31, 4.0S f 2020-07-31, 4.0S f 2020-07-31
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of 5ml channels: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of labware handling channels: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of auto load: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of iSWAP: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of washer 1: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of washer 2: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of temperature-controlled carrier 1: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of temperature-controlled carrier 2: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of CO-RE 96 Head: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of pump station 1: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of pump station 2: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of pump station 3: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of nano dispenser: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of nano dispenser pressure unit: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of CO-RE 384 Head: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of tube gripper: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of camera channel: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of gel card gripper: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of punch card gripper: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of puncher module: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of twister decapper station 1 module 1: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of twister decapper station 1 module 2: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of twister decapper station 2 module 1: not installed
+2023-08-14 12:24:46> Microlab® STARlet : Start method command - progress; Firmware version of twister decapper station 2 module 2: not installed
+2023-08-14 12:24:49> Microlab® STARlet : Start method command - complete;
+2023-08-14 12:24:49> SYSTEM : Start method - complete; 
+2023-08-14 12:24:49> SYSTEM : Execute method - start; Method file C:\Program Files (x86)\Hamilton\Methods\gripperstest.hsl
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib - progress; Version: V4.4
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib - CreateStarDevice - start; 
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Send message = T1QU
+2023-08-14 12:24:49> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:24:49> Microlab® STARlet : Firmware Command (Single Step) - complete;  > QU: au0 0 0 0 0 0 0 0 0 0
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Received answere = T1QUau0 0 0 0 0 0 0 0 0 0
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Send message = T1QW
+2023-08-14 12:24:49> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:24:49> Microlab® STARlet : Firmware Command (Single Step) - complete;  > QW: qw1
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Received answere = T1QWqw1
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Send message = T1RF
+2023-08-14 12:24:49> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:24:49> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RF: rf3.2S e 2015-08-17 (Heater Shaker)
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib - CreateStarDevice - progress; ML_Star node '1' firmware version = 3.2S e 2015-08-17 (Heater Shaker)
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib - CreateStarDevice - complete; 
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib - StartTempCtrl - start; 
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib - StartTempCtrl - progress; Send command to ML_Star node ( 1 ).
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Send message = T1TAta0370tb1800tc0020td0060
+2023-08-14 12:24:49> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:24:49> Microlab® STARlet : Firmware Command (Single Step) - complete;  > TA: er00
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Received answere = T1TAer00
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib - StartTempCtrl - complete; 
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib - StartShakerTimed - start; 
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib - StartShakerTimed - progress; Send command to ML_Star node ( 1 ).
+2023-08-14 12:24:49> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Send message = T1LPlp1
+2023-08-14 12:24:49> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:24:50> Microlab® STARlet : Firmware Command (Single Step) - complete;  > LP: er00
+2023-08-14 12:24:50> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Received answere = T1LPer00
+2023-08-14 12:24:50> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Send message = T1STsd00060st0sv0560sr01000
+2023-08-14 12:24:50> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:24:50> Microlab® STARlet : Firmware Command (Single Step) - complete;  > ST: er00
+2023-08-14 12:24:50> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Received answere = T1STer00
+2023-08-14 12:24:50> SYSTEM : HSLHamHeaterShakerLib - StartShakerTimed - complete; 
+2023-08-14 12:24:50> SYSTEM : HSLHamHeaterShakerLib - WaitForShaker - start; 
+2023-08-14 12:24:50> SYSTEM : HSLHamHeaterShakerLib - WaitForShaker - progress; Send command to ML_Star node ( 1 ).
+2023-08-14 12:24:50> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:24:50> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:24:55> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:24:55> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:00> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:00> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:05> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:05> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:10> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:10> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:15> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:15> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:20> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:20> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:25> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:25> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:30> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:30> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:35> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:35> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:40> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:40> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:45> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:45> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:50> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:50> Microlab® STARlet : Firmware Command (Single Step) - complete;  > RD: rd1
+2023-08-14 12:25:50> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Send message = T1SW
+2023-08-14 12:25:50> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:51> Microlab® STARlet : Firmware Command (Single Step) - complete;  > SW: er00
+2023-08-14 12:25:51> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Received answere = T1SWer00
+2023-08-14 12:25:51> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Send message = T1LPlp0
+2023-08-14 12:25:51> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:53> Microlab® STARlet : Firmware Command (Single Step) - complete;  > LP: er00
+2023-08-14 12:25:53> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Received answere = T1LPer00
+2023-08-14 12:25:53> SYSTEM : HSLHamHeaterShakerLib - WaitForShaker - complete; 
+2023-08-14 12:25:53> SYSTEM : HSLHamHeaterShakerLib - StopTempCtrl - start; 
+2023-08-14 12:25:53> SYSTEM : HSLHamHeaterShakerLib - StopTempCtrl - progress; Send command to ML_Star node ( 1 ).
+2023-08-14 12:25:53> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Send message = T1TO
+2023-08-14 12:25:53> Microlab® STARlet : Firmware Command (Single Step) - start;
+2023-08-14 12:25:53> Microlab® STARlet : Firmware Command (Single Step) - complete;  > TO: er00
+2023-08-14 12:25:53> SYSTEM : HSLHamHeaterShakerLib::SendToStar - progress; Received answere = T1TOer00
+2023-08-14 12:25:53> SYSTEM : HSLHamHeaterShakerLib - StopTempCtrl - complete; 
+2023-08-14 12:25:53> SYSTEM : HSLHamHeaterShakerLib - Terminate - start; 
+2023-08-14 12:25:53> SYSTEM : HSLHamHeaterShakerLib - Terminate - complete; 
+2023-08-14 12:25:53> SYSTEM : Execute method - complete; 
+2023-08-14 12:25:53> SYSTEM : End method - start; 
+2023-08-14 12:25:53> Microlab® STARlet : End method command - start;
+2023-08-14 12:25:53> Microlab® STARlet : Clean up instrument - progress; Move up 1000ul channels
+2023-08-14 12:25:53> Microlab® STARlet : Clean up instrument - progress; Spreading channels
+2023-08-14 12:25:54> Microlab® STARlet : End method command - complete;
+2023-08-14 12:25:54> SYSTEM : End method - complete; 

@@ -1,0 +1,77 @@
+2023-08-16 13:33:16> SYSTEM : Analyze method - start; Method file C:\Program Files (x86)\Hamilton\Methods\MPE2Testing\MPE2_Test_ServiceV1.2 draft.hsl
+2023-08-16 13:33:17> SYSTEM : Analyze method - complete; 
+2023-08-16 13:33:20> SYSTEM : Start method - start; 
+2023-08-16 13:33:20> SYSTEM : Start method - progress; User name: Hamilton
+2023-08-16 13:33:20> SYSTEM : Start method - progress; Phoenix software version: 4.5.0.7977
+2023-08-16 13:33:20> SYSTEM : Start method - progress; Database version: Standard
+2023-08-16 13:33:20> SYSTEM : Start method - progress; Sample tracking: Off
+2023-08-16 13:33:20> SYSTEM : Start method - progress; Vector Database: On
+2023-08-16 13:33:20> SYSTEM : Start method - progress; Vector Database connection: Database 'HamiltonVectorDB' on Microsoft SQL Server 'LOCALHOST\HAMILTON' with user 'Hamilton'
+2023-08-16 13:33:20> SYSTEM : Start method - complete; 
+2023-08-16 13:33:20> SYSTEM : Execute method - start; Method file C:\Program Files (x86)\Hamilton\Methods\MPE2Testing\MPE2_Test_ServiceV1.2 draft.hsl
+2023-08-16 13:33:20> USER : Trace - complete; _______Start get SimulationMode 
+2023-08-16 13:33:20> USER : Trace - complete; _______blnSimulation: 0
+2023-08-16 13:33:21> SYSTEM : Custom Dialog - start; <StartDialog>
+2023-08-16 13:33:31> SYSTEM : Custom Dialog - complete; <StartDialog>, Closed with: <1>
+2023-08-16 13:33:31> SYSTEM : Custom Dialog - start; <Configuration Dialog>
+2023-08-16 13:33:34> SYSTEM : Custom Dialog - complete; <Configuration Dialog>, Closed with: <1>
+2023-08-16 13:33:34> SYSTEM : Custom Dialog - start; <Dialog>
+2023-08-16 13:33:38> SYSTEM : Custom Dialog - complete; <Dialog>, Closed with: <1>
+2023-08-16 13:33:38> SYSTEM : Custom Dialog - start; <Configuration Dialog>
+2023-08-16 13:33:40> SYSTEM : Custom Dialog - complete; <Configuration Dialog>, Closed with: <1>
+2023-08-16 13:33:40> TRACELEVEL : Trace_02 - complete;  START
+2023-08-16 13:33:40> _Method::HSLMPELib::ConnectUsingCOM : () - start;  comPort = 12, Baud Rate = 921600, Simulation Mode = 0, Accessory Controller Options = 0
+2023-08-16 13:33:44> _Method::HSLMPELib::ConnectUsingCOM : () - complete; Connected. MPE Available, deviceId = 1.
+2023-08-16 13:33:44> TRACELEVEL : Trace_02 - complete; Start_Method::MPECONTROLLER01::IsConnected
+2023-08-16 13:33:44> TRACELEVEL : Trace_02 - complete; MPE2 device ID (i_intDeviceID): 1
+2023-08-16 13:33:44> _Method::HSLMPELib::IsConnected : () - start;  deviceId = 1
+2023-08-16 13:33:44> _Method::HSLMPELib::IsConnected : () - complete;  Is Connected = 1
+2023-08-16 13:33:44> TRACELEVEL : Trace_02 - complete; MPE2 connection status (o_intIsConnected): 1
+2023-08-16 13:33:44> TRACELEVEL : Trace_02 - complete; End_Method::MPECONTROLLER01::IsConnected
+2023-08-16 13:33:44> SYSTEM : Custom Dialog - start; <Dialog>
+2023-08-16 13:33:45> SYSTEM : Custom Dialog - complete; <Dialog>, Closed with: <1>
+2023-08-16 13:33:46> SYSTEM : Custom Dialog - start; <User request Dialog>
+2023-08-16 13:33:47> SYSTEM : Custom Dialog - complete; <User request Dialog>, Closed with: <7>
+2023-08-16 13:33:47> SYSTEM : Custom Dialog - start; <Dialog>
+2023-08-16 13:34:06> SYSTEM : Custom Dialog - complete; <Dialog>, Closed with: <1>
+2023-08-16 13:34:06> _Method::HSLMPELib::IsInitialized : () - start;  deviceId = 1
+2023-08-16 13:34:06> _Method::HSLMPELib::IsInitialized : () - complete;  Is Initialized = 0
+2023-08-16 13:34:06> _Method::HSLMPELib::Initialize : () - start;  deviceId = 1
+2023-08-16 13:34:45> _Method::HSLMPELib::Initialize : () - complete; 
+2023-08-16 13:34:45> SYSTEM : Custom Dialog - start; <Clamp Settings Dialog>
+2023-08-16 13:35:10> SYSTEM : Custom Dialog - complete; <Clamp Settings Dialog>, Closed with: <1>
+2023-08-16 13:35:10> _Method::HSLMPELib::FilterPlatePlaced : () - start;  deviceId = 1, Filter Height = 14.9, Nozzle Height = 14.9
+2023-08-16 13:35:10> _Method::HSLMPELib::FilterPlatePlaced : () - complete; 
+2023-08-16 13:35:10> SYSTEM : Custom Dialog - start; <Dialog>
+2023-08-16 13:35:40> SYSTEM : Custom Dialog - complete; <Dialog>, Closed with: <1>
+2023-08-16 13:35:40> _Method::HSLMPELib::ClampFilterPlate : () - start;  deviceId = 1
+2023-08-16 13:35:54> _Method::HSLMPELib::ClampFilterPlate : () - complete; 
+2023-08-16 13:35:54> SYSTEM : Custom Dialog - start; <Dialog>
+2023-08-16 13:35:57> SYSTEM : Custom Dialog - complete; <Dialog>, Closed with: <1>
+2023-08-16 13:35:57> _Method::HSLMPELib::RetrieveFilterPlate : () - start;  deviceId = 1
+2023-08-16 13:36:08> _Method::HSLMPELib::RetrieveFilterPlate : () - complete; 
+2023-08-16 13:36:08> _Method::HSLMPELib::FilterPlateRemoved : () - start;  deviceId = 1
+2023-08-16 13:36:08> _Method::HSLMPELib::FilterPlateRemoved : () - complete; 
+2023-08-16 13:36:08> SYSTEM : Custom Dialog - start; <User request Dialog>
+2023-08-16 13:36:11> SYSTEM : Custom Dialog - complete; <User request Dialog>, Closed with: <7>
+2023-08-16 13:36:11> SYSTEM : Custom Dialog - start; <Clamp Settings Dialog>
+2023-08-16 13:36:14> SYSTEM : Custom Dialog - complete; <Clamp Settings Dialog>, Closed with: <1>
+2023-08-16 13:36:14> _Method::HSLMPELib::FilterPlatePlaced : () - start;  deviceId = 1, Filter Height = 14.9, Nozzle Height = 14.9
+2023-08-16 13:36:14> _Method::HSLMPELib::FilterPlatePlaced : () - complete; 
+2023-08-16 13:36:14> SYSTEM : Custom Dialog - start; <Dialog>
+2023-08-16 13:36:44> SYSTEM : Custom Dialog - complete; <Dialog>, Closed with: <1>
+2023-08-16 13:36:44> _Method::HSLMPELib::ProcessFilterToWasteContainer : () - start;  deviceId = 1, Control Points = pressure, 0, 5;pressure, 10, 5;pressure, 15, 5;pressure, 20, 5;pressure, 30, 5;pressure, 40, 5;pressure, 50, 5; pressure, 60, 5, Return Plate To Integration Area = 1, Waste Container Id = 0, Disable Vacuum Check = 1
+2023-08-16 13:37:55> _Method::HSLMPELib::ProcessFilterToWasteContainer : () - complete; 
+2023-08-16 13:37:55> SYSTEM : Custom Dialog - start; <Dialog>
+2023-08-16 13:37:57> SYSTEM : Custom Dialog - complete; <Dialog>, Closed with: <1>
+2023-08-16 13:37:57> _Method::HSLMPELib::FilterPlateRemoved : () - start;  deviceId = 1
+2023-08-16 13:37:58> _Method::HSLMPELib::FilterPlateRemoved : () - complete; 
+2023-08-16 13:37:58> SYSTEM : Custom Dialog - start; <User request Dialog>
+2023-08-16 13:37:59> SYSTEM : Custom Dialog - complete; <User request Dialog>, Closed with: <7>
+2023-08-16 13:37:59> _Method::HSLMPELib::Disconnect : () - start;  deviceId = 1
+2023-08-16 13:38:00> _Method::HSLMPELib::Disconnect : () - complete; 
+2023-08-16 13:38:00> SYSTEM : Custom Dialog - start; <Dialog>
+2023-08-16 13:38:01> SYSTEM : Custom Dialog - complete; <Dialog>, Closed with: <1>
+2023-08-16 13:38:01> SYSTEM : Execute method - complete; 
+2023-08-16 13:38:01> SYSTEM : End method - start; 
+2023-08-16 13:38:01> SYSTEM : End method - complete; 
