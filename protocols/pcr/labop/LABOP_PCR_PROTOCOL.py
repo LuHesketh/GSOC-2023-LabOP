@@ -31,7 +31,7 @@ def generate_initialize_subprotocol(doc):
     PLASMID.name = "DNA TO BE PURIFIEd"
 
     Ethanol = sbol3.Component(
-        "silica_beads",
+        "Ethanol 70%",
         "https://nanocym.com/wp-content/uploads/2018/07/NanoCym-All-Datasheets-.pdf",
     )
     Ethanol.name = "Ethanol 70%, ideal for PCR/PLASMID PUTIFICATION"
@@ -194,28 +194,10 @@ def generate_initialize_subprotocol(doc):
 def generate_MPE_subprotocol(doc: sbol3.Document):
     import labop
     subprotocol = labop.Protocol("Activate_Air_pump")
-    MPE = (comPort, BaudRate, SimulationMode, options)
-    comPort = 12
-    BaudRate = 921600
-    SimulationMode = 0
-    options = 0
-    FilterHeight = 14.9
-    NozzleHeight = 14.9
 
-    ControlPoints = "pressure, 0, 5;pressure, 10, 5;pressure, 15, 5;pressure, 20, 5;pressure, 30, 5;pressure, 40, 5;pressure, 50, 5; pressure, 60, 5"
-    ReturnPlateToIntegrationArea = 1
-    WasteContainerID = 0
-    DisableVacuumCheck = 1
-
-    def MPE_overpressure(mpe2_FilterPlatePlaced,mpe2_ProcessFilterToWasteContainer, mpe2_FilterPlateRemoved)
-        mpe2_FilterPlatePlaced(MPE,1, FilterHeight, NozzleHeight)
-        mpe2_ProcessFilterToWasteContainer(MPE, 1, ControlPoints,ReturnPlateToIntegrationArea, WasteContainerID, DisableVacuumCheck)
-        mpe2_FilterPlateRemoved(MPE, 1) 
-
-    MPE_overpressure
 
     doc.add(subprotocol)
-
+    return subprotocol
 
 def generate_protocol():
     import labop
@@ -312,7 +294,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     Activate_Air_pump = protocol.primitive_step( 
         MPE_subprotocol_defn
     )
-
+    
 #######################################
 
     plan_mapping1 = serialize_sample_format(

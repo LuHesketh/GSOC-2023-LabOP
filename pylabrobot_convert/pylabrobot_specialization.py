@@ -194,8 +194,11 @@ class PylabrobotSpecialization(BehaviorSpecialization):
             # "https://bioprotocols.org/labop/primitives/sample_arrays/LoadRackOnInstrument": self.load_racks,
             "https://bioprotocols.org/labop/primitives/sample_arrays/ConfigureRobot": self.configure_robot,
             "https://bioprotocols.org/labop/primitives/pcr/PCR": self.pcr,
+            "http://labop.io/Activate_Air_pump": self.activate_airpump,
         }
-
+        #uma dessas cordinhas laranjas pode servir de identificador para o subprotocolo do MPE
+        #ter um comando no protocolo de PCR que instancia um namespace (prefixo) 
+        #the protocol should have the namespace 
     def _materials(self):
         protocol = self.execution.protocol.lookup()
 
@@ -267,6 +270,9 @@ from pylabrobot.liquid_handling.backends.simulation.simulator_backend import (
 )
 from pylabrobot.resources import Cos_96_EZWash, Cos_96_PCR, HTF_L, Coordinate
 from pylabrobot.resources.hamilton import STARLetDeck
+from pylabrobot import MPE
+from pylabrobot import mpebackend
+
 
 backend = SimulatorBackend()
 deck = STARLetDeck()
@@ -776,3 +782,27 @@ async def LiquidHandler_setup():
             instrument.configuration = {}
             for c in get_sample_list(slots):
                 instrument.configuration[c] = container_spec
+
+    def activate_airpump(self, record: labop.ActivityNodeExecution, ex: labop.ProtocolExecution):
+
+       output_string = """    MPE = (comPort, BaudRate, SimulationMode, options)
+        comPort = 12
+        BaudRate = 921600
+        SimulationMode = 0
+        options = 0
+
+        FilterHeight = 14.9
+        NozzleHeight = 14.9
+        ControlPoints = \"pressure, 0, 5;pressure, 10, 5;pressure, 15, 5;pressure, 20, 5;pressure, 30, 5;pressure, 40, 5;pressure, 50, 5; pressure, 60, 5"
+        ReturnPlateToIntegrationArea = 1
+        WasteContainerID = 0
+        DisableVacuumCheck = 1
+
+        def MPE_overpressure(mpe2_FilterPlatePlaced,mpe2_ProcessFilterToWasteContainer, mpe2_FilterPlateRemoved)
+                mpe2_FilterPlatePlaced(MPE,1, FilterHeight, NozzleHeight)
+                mpe2_ProcessFilterToWasteContainer(MPE, 1, ControlPoints,ReturnPlateToIntegrationArea, WasteContainerID, DisableVacuumCheck)
+                mpe2_FilterPlateRemoved(MPE, 1) 
+
+        MPE_overpressure"""        
+       self.script_steps += [output_string]
+
