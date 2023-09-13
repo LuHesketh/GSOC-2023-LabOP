@@ -265,9 +265,6 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
         initialize_subprotocol
     )
 
-    Activate_Air_pump = protocol.primitive_step( 
-        MPE_subprotocol_defn
-    )
 
     plan_mapping = serialize_sample_format(
             xr.DataArray(
