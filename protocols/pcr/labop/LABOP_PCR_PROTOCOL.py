@@ -191,16 +191,31 @@ def generate_initialize_subprotocol(doc):
 #here the PLASMID would already be inside the MPE2 and the pressure pump would be activated
 #pushing the PLASMID through the collumns inside the container
 #a sub-protocol should be made to represent this step
-def generate_MPE_subprotocol(doc):
-    protocol = labop.Protocol("Activate_Air_pump")
-    doc.add(protocol)
-    # mpe2_filter_plate_placed,
-    #         mpe2_clamp_filter_plate,
-    #         
-    #         mpe2_process_filter_to_waste_container,
-    #         mpe2_stop_vacuum,
-    #         mpe2_filter_plate_removed
-    return protocol
+def generate_MPE_subprotocol(doc: sbol3.Document):
+    import labop
+    subprotocol = labop.Protocol("Activate_Air_pump")
+    MPE = (comPort, BaudRate, SimulationMode, options)
+    comPort = 12
+    BaudRate = 921600
+    SimulationMode = 0
+    options = 0
+    FilterHeight = 14.9
+    NozzleHeight = 14.9
+
+    ControlPoints = "pressure, 0, 5;pressure, 10, 5;pressure, 15, 5;pressure, 20, 5;pressure, 30, 5;pressure, 40, 5;pressure, 50, 5; pressure, 60, 5"
+    ReturnPlateToIntegrationArea = 1
+    WasteContainerID = 0
+    DisableVacuumCheck = 1
+
+    def MPE_overpressure(mpe2_FilterPlatePlaced,mpe2_ProcessFilterToWasteContainer, mpe2_FilterPlateRemoved)
+        mpe2_FilterPlatePlaced(MPE,1, FilterHeight, NozzleHeight)
+        mpe2_ProcessFilterToWasteContainer(MPE, 1, ControlPoints,ReturnPlateToIntegrationArea, WasteContainerID, DisableVacuumCheck)
+        mpe2_FilterPlateRemoved(MPE, 1) 
+
+    MPE_overpressure
+
+    doc.add(subprotocol)
+
 
 def generate_protocol():
     import labop
@@ -250,7 +265,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
         initialize_subprotocol
     )
 
-    MPE_subprotocol = protocol.primitive_step( #use this to call out the sub protocol
+    Activate_Air_pump = protocol.primitive_step( 
         MPE_subprotocol_defn
     )
 
@@ -294,6 +309,15 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
     )
 
+#############################################
+#call out MPE SUBPROTOCOL
+
+    Activate_Air_pump = protocol.primitive_step( 
+        MPE_subprotocol_defn
+    )
+
+#######################################
+
     plan_mapping1 = serialize_sample_format(
             xr.DataArray(
                 [
@@ -334,6 +358,15 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
     )
 
+#############################################
+#call out MPE SUBPROTOCOL
+
+    Activate_Air_pump = protocol.primitive_step( 
+        MPE_subprotocol_defn
+    )
+
+
+
     # The SampleMap specifies the sources and targets, along with the mappings.
     plan2 = labop.SampleMap(
         sources=[initialization.output_pin("Ethanol_container")],
@@ -350,6 +383,16 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
         amount=sbol3.Measure(200, tyto.OM.milliliter),
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
     )
+
+#############################################
+#call out MPE SUBPROTOCOL
+
+    Activate_Air_pump = protocol.primitive_step( 
+        MPE_subprotocol_defn
+    )
+
+
+################################################
 
     plan_mapping3 = serialize_sample_format(
             xr.DataArray(
@@ -390,6 +433,18 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
         amount=sbol3.Measure(20, tyto.OM.milliliter),
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
     )
+
+#############################################
+#call out MPE SUBPROTOCOL
+
+    Activate_Air_pump = protocol.primitive_step( 
+        MPE_subprotocol_defn
+    )
+
+
+################################################
+
+
 
     #move filter plate located in the MPE to heater shaker incubator using robotic gripper
 
