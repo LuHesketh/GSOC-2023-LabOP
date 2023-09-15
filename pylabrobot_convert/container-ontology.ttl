@@ -631,7 +631,7 @@ cont:Rack rdf:type owl:Class ;
 ###  https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py 
 cont:Corning_96_EZWash_plate rdf:type owl:Class ;
                     rdfs:subClassOf cont:Plate ;
-                    rdfs:label "Corning Costar EZwash plate with 96 wells" 
+                    rdfs:label "Corning Costar EZwash plate with 96 wells" .
 
 ###  https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py 
 cont:Corning_96_Filter_plate rdf:type owl:Class ;
