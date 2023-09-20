@@ -176,8 +176,6 @@ class PylabrobotSpecialization(BehaviorSpecialization):
             #"https://bioprotocols.org/labop/primitives/pcr/PCR": self.pcr,
             "https://bioprotocols.org/labop/primitives/plate_handling/Filter": self.activate_airpump,
         }
-        #uma dessas cordinhas laranjas pode servir de identificador para o subprotocolo do MPE
-        #ter um comando no protocolo de PCR que instancia um namespace (prefixo) 
         #the protocol should have the namespace 
 #    def _materials(self):
  #       protocol = self.execution.protocol.lookup()
