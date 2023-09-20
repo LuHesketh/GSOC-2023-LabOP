@@ -58,7 +58,7 @@ LABWARE_MAP = {
     # this is for TIP carriers (C:\Users\Luiza\pylabrobot\pylabrobot\resources\ml_star\tip_carriers.py)
     # HAMILTON ML star tip carriers
     ContO[
-        "MLSTARTipCarrier4ml"
+        "ML STAR Tip Carrier with 5 4ml tip with filter racks landscape"
     ]: "TIP_CAR_120BC_4mlTF_A00",
     ContO[
         "ML STAR Tip carrier with 5 5ml tip racks landscape"
@@ -192,66 +192,66 @@ class PylabrobotSpecialization(BehaviorSpecialization):
             "https://bioprotocols.org/labop/primitives/sample_arrays/LoadContainerInRack": self.load_container_in_rack,
             "https://bioprotocols.org/labop/primitives/sample_arrays/LoadContainerOnInstrument": self.load_container_on_instrument,
             # "https://bioprotocols.org/labop/primitives/sample_arrays/LoadRackOnInstrument": self.load_racks,
-            "https://bioprotocols.org/labop/primitives/sample_arrays/ConfigureRobot": self.configure_robot,
-            "https://bioprotocols.org/labop/primitives/pcr/PCR": self.pcr,
-            "http://labop.io/Activate_Air_pump": self.activate_airpump,
+            #"https://bioprotocols.org/labop/primitives/sample_arrays/ConfigureRobot": self.configure_robot,
+            #"https://bioprotocols.org/labop/primitives/pcr/PCR": self.pcr,
+            "https://bioprotocols.org/labop/primitives/plate_handling/Filter": self.activate_airpump,
         }
         #uma dessas cordinhas laranjas pode servir de identificador para o subprotocolo do MPE
         #ter um comando no protocolo de PCR que instancia um namespace (prefixo) 
         #the protocol should have the namespace 
-    def _materials(self):
-        protocol = self.execution.protocol.lookup()
+#    def _materials(self):
+ #       protocol = self.execution.protocol.lookup()
 
-        materials = {
-            obj.name: obj
-            for obj in protocol.document.objects
-            if type(obj) is sbol3.Component
-        }
-        markdown = "\n\n## Protocol Materials:\n"
-        for name, material in materials.items():
-            markdown += f"* [{name}]({material.types[0]})\n"
+#        materials = {
+#            obj.name: obj
+#            for obj in protocol.document.objects
+#            if type(obj) is sbol3.Component
+#        }
+#        markdown = "\n\n## Protocol Materials:\n"
+#        for name, material in materials.items():
+#            markdown += f"* [{name}]({material.types[0]})\n"
 
         # Compute container types and quantities
-        document_objects = []
-        protocol.document.traverse(lambda obj: document_objects.append(obj))
-        call_behavior_actions = [
-            obj for obj in document_objects if type(obj) is uml.CallBehaviorAction
-        ]
-        containers = {}
-        for cba in call_behavior_actions:
-            input_names = [input.name for input in cba.inputs]
-            if "specification" in input_names:
-                container = cba.input_pin("specification").value.value.lookup()
-            elif "rack" in input_names:
-                container = cba.input_pin("rack").value.value.lookup()
-            elif (
-                "container" in input_names
-                and type(cba.input_pin("container")) is uml.ValuePin
-            ):
-                container = cba.input_pin("container").value.value.lookup()
-            else:
-                continue
-            container_type = container.queryString
-            container_name = container.name if container.name else "unnamed"
-            qty = cba.input_pin("quantity") if "quantity" in input_names else 1
+#        document_objects = []
+#        protocol.document.traverse(lambda obj: document_objects.append(obj))
+#        call_behavior_actions = [
+#            obj for obj in document_objects if type(obj) is uml.CallBehaviorAction
+#        ]
+#        containers = {}
+#        for cba in call_behavior_actions:
+#            input_names = [input.name for input in cba.inputs]
+#            if "specification" in input_names:
+#                container = cba.input_pin("specification").value.value.lookup()
+#            elif "rack" in input_names:
+#                container = cba.input_pin("rack").value.value.lookup()
+#            elif (
+#                "container" in input_names
+#                and type(cba.input_pin("container")) is uml.ValuePin
+#            ):
+#                container = cba.input_pin("container").value.value.lookup()
+ #           else:
+#                continue
+#            container_type = container.queryString
+##            container_name = container.name if container.name else "unnamed"
+ #           qty = cba.input_pin("quantity") if "quantity" in input_names else 1
 
-            if container_type not in containers:
-                containers[container_type] = {}
-            containers[container_type][container_name] = qty
+ #           if container_type not in containers:
+ #               containers[container_type] = {}
+ #           containers[container_type][container_name] = qty
 
-        for container_type, container_name_map in containers.items():
-            for container_name, qty in container_name_map.items():
-                container_str = ContO.get_term_by_uri(container_type)
-                if "TipRack" in container_type:
-                    text = f"* {container_str}"
-                elif container_name == "unnamed":
-                    text = f"* unnamed {container_str}"
-                else:
-                    text = f"* `{container_name}` ({container_str})"
-                if qty > 1:
-                    text += f" (x {qty})"
-                text += "\n"
-                markdown += text
+ #       for container_type, container_name_map in containers.items():
+ #           for container_name, qty in container_name_map.items():
+ #               container_str = ContO.get_term_by_uri(container_type)
+#                if "TipRack" in container_type:
+#                    text = f"* {container_str}"
+#                elif container_name == "unnamed":
+#                    text = f"* unnamed {container_str}"
+#                else:
+#                    text = f"* `{container_name}` ({container_str})"
+#                if qty > 1:
+#                    text += f" (x {qty})"
+#                text += "\n"
+#                markdown += text
 
     def handle_process_failure(self, record, exception):
         super().handle_process_failure(record, exception)
@@ -317,7 +317,7 @@ async def LiquidHandler_setup():
     ###################################################
     # see about def _tipracks object
     ##################################################
-    def _materials(self):
+    #def _materials(self):
         protocol = self.execution.protocol.lookup()
 
         materials = {
@@ -785,24 +785,29 @@ async def LiquidHandler_setup():
 
     def activate_airpump(self, record: labop.ActivityNodeExecution, ex: labop.ProtocolExecution):
 
-       output_string = """    MPE = (comPort, BaudRate, SimulationMode, options)
-        comPort = 12
-        BaudRate = 921600
+       output_string = """ 
+       comPort = 12
+       BaudRate = 921600
         SimulationMode = 0
         options = 0
-
         FilterHeight = 14.9
         NozzleHeight = 14.9
-        ControlPoints = \"pressure, 0, 5;pressure, 10, 5;pressure, 15, 5;pressure, 20, 5;pressure, 30, 5;pressure, 40, 5;pressure, 50, 5; pressure, 60, 5"
+
+        ControlPoints = "pressure, 0, 5;pressure, 10, 5;pressure, 15, 5;pressure, 20, 5;pressure, 30, 5;pressure, 40, 5;pressure, 50, 5; pressure, 60, 5"
         ReturnPlateToIntegrationArea = 1
         WasteContainerID = 0
         DisableVacuumCheck = 1
 
-        def MPE_overpressure(mpe2_FilterPlatePlaced,mpe2_ProcessFilterToWasteContainer, mpe2_FilterPlateRemoved)
-                mpe2_FilterPlatePlaced(MPE,1, FilterHeight, NozzleHeight)
-                mpe2_ProcessFilterToWasteContainer(MPE, 1, ControlPoints,ReturnPlateToIntegrationArea, WasteContainerID, DisableVacuumCheck)
-                mpe2_FilterPlateRemoved(MPE, 1) 
 
-        MPE_overpressure"""        
+
+        async def MPE_overpressure():
+        await MPE.mpe2_FilterPlatePlaced(MPE, 1, FilterHeight, NozzleHeight)
+        await MPE.mpe2_ProcessFilterToWasteContainer(MPE, 1, ControlPoints,ReturnPlateToIntegrationArea, WasteContainerID, DisableVacuumCheck)
+        await MPE.mpe2_FilterPlateRemoved(MPE, 1) 
+
+
+
+        asyncio .run(__init__())
+        asyncio .run(MPE_overpressure())"""        
        self.script_steps += [output_string]
 
