@@ -12,7 +12,7 @@ from labop.strings import Strings
 import xarray as xr
 from tyto import OM
 import tyto
-from pylabrobot_convert.pylabrobot_specialization import PylabrobotSpecialization
+from labop_convert.pylabrobot import pylabrobot_specialization
 
 
 filename = "".join(__file__.split(".py")[0].split("/")[-1:])
@@ -25,23 +25,23 @@ def generate_initialize_subprotocol(doc):
     doc.add(protocol)
 
     # create the materials to be provisioned
-    PLASMID = sbol3.Component(
+    PCR = sbol3.Component(
         "ddH2O", "https://identifiers.org/pubchem.substance:24901740"
     )
-    PLASMID.name = "DNA TO BE PURIFIEd"
+    PCR.name = "PCR samples TO BE PURIFIEd"
 
     Ethanol = sbol3.Component(
-        "Ethanol 70%",
+        "Ethanol_70",
         "https://nanocym.com/wp-content/uploads/2018/07/NanoCym-All-Datasheets-.pdf",
     )
-    Ethanol.name = "Ethanol 70%, ideal for PCR/PLASMID PUTIFICATION"
+    Ethanol.name = "Ethanol 70%, ideal for PCR PUTIFICATION"
     
     water = sbol3.Component(
         "MLQ_water", "https://identifiers.org/pubchem.substance:24901740"
     )
-    water.name = "MLQ water for plasmid retrieving"
+    water.name = "MLQ water for PCR retrieving"
 
-    doc.add(PLASMID)
+    doc.add(PCR)
     doc.add(Ethanol)
     doc.add(water)
     
@@ -52,7 +52,7 @@ def generate_initialize_subprotocol(doc):
     protocol.name = PROTOCOL_LONG_NAME
     protocol.version = "1.2"
     protocol.description = """
- protocol to initialize transfer plasmid and ethanol to a MPE container for ethanol washes
+ protocol to initialize transfer PCR and ethanol to a MPE container for ethanol washes
     """
 
     doc.add(protocol)
@@ -64,7 +64,7 @@ def generate_initialize_subprotocol(doc):
         specification=labop.ContainerSpec(
             "Ethanol_container",
             name="Ethanol container",
-            queryString="cont:Corning_96_DW_1mL",
+            queryString="cont:Corning Costar 1 mL deep well plate with 96 wells",
             prefixMap={
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
@@ -78,12 +78,12 @@ def generate_initialize_subprotocol(doc):
         coordinates="(x=100, y=100, z=100)",
     )
 
-    PLASMID_plate = protocol.primitive_step(
+    PCR_plate = protocol.primitive_step(
         "LoadContainerOnInstrument",
         specification=labop.ContainerSpec(
-            "PLASMID_plate",
-            name="PLASMID_plate",
-            queryString="cont:Corning96WellPlate360uLFlat",
+            "PCR_plate",
+            name="PCR_plate",
+            queryString="cont:Corning 96 Well Plate 360 uL Flat",
             prefixMap={
                 "cont": "https://sift.net/container-ontology/container-ontology#Corning96WellPlate360uLFlat"
             },
@@ -96,7 +96,7 @@ def generate_initialize_subprotocol(doc):
         specification=labop.ContainerSpec(
             "water_container",
             name="water container",
-            queryString="cont:Corning_96_DW_1mL",
+            queryString="cont:Corning 96 Well Plate 360 uL Flat",
             prefixMap={
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
@@ -109,7 +109,7 @@ def generate_initialize_subprotocol(doc):
         specification=labop.ContainerSpec(
             "MPE_plate",
             name="MPE_plate",
-            queryString="cont:Corning_96_Filter_plate",
+            queryString="cont:Corning Costar filter plate with 96 wells",
             prefixMap={
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
@@ -119,8 +119,8 @@ def generate_initialize_subprotocol(doc):
 
     provision = protocol.primitive_step(
         "Provision",
-        resource=PLASMID,
-        destination=PLASMID_plate.output_pin("samples"),
+        resource=PCR,
+        destination=PCR_plate.output_pin("samples"),
         amount=sbol3.Measure(30, OM.microliter),
     )
 
@@ -142,9 +142,9 @@ def generate_initialize_subprotocol(doc):
   
 
     output1 = protocol.designate_output(
-        "PLASMID_plate",
+        "PCR_plate",
         "http://bioprotocols.org/labop#SampleArray",
-        source=PLASMID_plate.output_pin("samples"),
+        source=PCR_plate.output_pin("samples"),
     )
 
     output2 = protocol.designate_output(
@@ -188,8 +188,8 @@ def generate_initialize_subprotocol(doc):
 
     return protocol
 
-#here the PLASMID would already be inside the MPE2 and the pressure pump would be activated
-#pushing the PLASMID through the collumns inside the container
+#here the PCR samples would already be inside the MPE2 and the pressure pump would be activated
+#pushing the PCR through the collumns inside the container
 #a sub-protocol should be made to represent this step
 def generate_MPE_subprotocol(doc: sbol3.Document):
     import labop
@@ -211,7 +211,7 @@ def generate_protocol():
     # print("Importing libraries")
     labop.import_library("liquid_handling")
     # print("... Imported liquid handling")
-    labop.import_library("plate_handling")
+    labop.import_library(r"C:\Users\Luiza\GSOC-2023-LabOP\pylabrobot_convert\plate_handling.ttl")
     # print("... Imported plate handling")
     labop.import_library("sample_arrays")
     # print("... Imported sample arrays")
@@ -263,9 +263,9 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
                     f"target_{Strings.LOCATION}",
                 ),
                 coords={
-                    f"source_{Strings.CONTAINER}": [initialization.output_pin("PLASMID_container").name],
+                    f"source_{Strings.CONTAINER}": [initialization.output_pin("PCR_plate").name],
                     f"source_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
-                    f"source_{Strings.CONTAINER}": [initialization.output_pin("MPE_container").name],
+                    f"source_{Strings.CONTAINER}": [initialization.output_pin("MPE_plate").name],
                     f"source_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"]
                 },
             )
@@ -273,16 +273,16 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
 
     # The SampleMap specifies the sources and targets, along with the mappings.
     plan = labop.SampleMap(
-        sources=[initialization.output_pin("PLASMID_container")],
-        targets=[initialization.output_pin("MPE_container")],
+        sources=[initialization.output_pin("PCR_plate")],
+        targets=[initialization.output_pin("MPE_plate")],
         values=plan_mapping,
     )
 
-    #transfer plasmid to MPE PLATE
+    #transfer PCR to MPE PLATE
     transfer_by_map = protocol.primitive_step(
         "TransferByMap",
-        source=initialization.output_pin("PLASMID_container"),
-        destination=initialization.output_pin("MPE_container"),
+        source=initialization.output_pin("PCR_plate"),
+        destination=initialization.output_pin("MPE_plate"),
         plan=plan,
         amount=sbol3.Measure(10, tyto.OM.milliliter),
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
@@ -314,7 +314,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
                 coords={
                     f"source_{Strings.CONTAINER}": [initialization.output_pin("Ethanol_container").name],
                     f"source_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
-                    f"target_{Strings.CONTAINER}": [initialization.output_pin("MPE_container").name],
+                    f"target_{Strings.CONTAINER}": [initialization.output_pin("MPE_plate").name],
                     f"target_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
                 },
             )
@@ -323,7 +323,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     # The SampleMap specifies the sources and targets, along with the mappings.
     plan1 = labop.SampleMap(
         sources=[initialization.output_pin("Ethanol_container")],
-        targets=[initialization.output_pin("MPE_container")],
+        targets=[initialization.output_pin("MPE_plate")],
         values=plan_mapping1,
     )
 
@@ -331,7 +331,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     transfer_by_map = protocol.primitive_step(
         "TransferByMap",
         source=initialization.output_pin("Ethanol_container"),
-        destination=initialization.output_pin("MPE_container"),
+        destination=initialization.output_pin("MPE_plate"),
         plan=plan1,
         amount=sbol3.Measure(200, tyto.OM.milliliter),
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
@@ -349,7 +349,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     # The SampleMap specifies the sources and targets, along with the mappings.
     plan2 = labop.SampleMap(
         sources=[initialization.output_pin("Ethanol_container")],
-        targets=[initialization.output_pin("MPE_container")],
+        targets=[initialization.output_pin("MPE_plate")],
         values=plan_mapping1,
     )
 
@@ -357,7 +357,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     transfer_by_map = protocol.primitive_step(
         "TransferByMap",
         source=initialization.output_pin("Ethanol_container"),
-        destination=initialization.output_pin("MPE_container"),
+        destination=initialization.output_pin("MPE_plate"),
         plan=plan2,
         amount=sbol3.Measure(200, tyto.OM.milliliter),
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
@@ -390,7 +390,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
                 coords={
                     f"source_{Strings.CONTAINER}": [initialization.output_pin("water_container").name],
                     f"source_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
-                    f"target_{Strings.CONTAINER}": [initialization.output_pin("MPE_container").name],
+                    f"target_{Strings.CONTAINER}": [initialization.output_pin("MPE_plate").name],
                     f"target_{Strings.LOCATION}": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
                 },
             )
@@ -399,15 +399,15 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     # The SampleMap specifies the sources and targets, along with the mappings.
     plan3= labop.SampleMap(
         sources=[initialization.output_pin("water_container")],
-        targets=[initialization.output_pin("MPE_container")],
+        targets=[initialization.output_pin("MPE_plate")],
         values=plan_mapping3,
     )
 
-    #transfer water to MPE plate for plasmid retrieving
+    #transfer water to MPE plate for PCR retrieving
     transfer_by_map = protocol.primitive_step(
         "TransferByMap",
         source=[initialization.output_pin("water_container")],
-        destination=[initialization.output_pin("MPE_container")],
+        destination=[initialization.output_pin("MPE_plate")],
         plan=plan3,
         amount=sbol3.Measure(20, tyto.OM.milliliter),
         temperature=sbol3.Measure(30, tyto.OM.degree_Celsius),
@@ -427,7 +427,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
 
     #move filter plate located in the MPE to heater shaker incubator using robotic gripper
 
-    #shake samples to restore purified PLASMID and manually retrive final product from heater shaker
+    #shake samples to restore purified PCR and manually retrive final product from heater shaker
     incubate = protocol.primitive_step(
     "Incubate",
     location= initialization.output_pin("shaking_incubator"),
@@ -436,7 +436,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     shakingFrequency=sbol3.Measure(250, OM.hertz),
     ) 
     
-    protocol.to_dot().render(os.path.join(OUT_DIR, f"{filename}-protocol-graph"))
+    #protocol.to_dot().render(os.path.join(OUT_DIR, f"{filename}-protocol-graph"))
 
     protocol_file = os.path.join(OUT_DIR, f"{filename}-protocol.nt")
     with open(protocol_file, "w") as f:
@@ -448,7 +448,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     ee = labop.ExecutionEngine(
         out_dir=OUT_DIR,
         failsafe=False,
-        specializations=[PylabrobotSpecialization(filename=os.path.join(OUT_DIR, f"{filename}-pylabrobot.py"))],
+        specializations=[pylabrobot_specialization(filename=os.path.join(OUT_DIR, f"{filename}-pylabrobot.py"))],
         sample_format="xarray"
     )
 
