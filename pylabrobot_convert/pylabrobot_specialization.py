@@ -27,26 +27,6 @@ ContO = tyto.Ontology(
 # Map pylabrobot pipette names to compatible tipracks
 # left is for Pylabrobot names
 # right is for LabOp names(container ontology)
-COMPATIBLE_TIPS = {
-    "p20_single_gen2": ["opentrons_96_tiprack_10ul", "opentrons_96_filtertiprack_10ul"],
-    "p300_single_gen2": ["opentrons_96_tiprack_300ul"],
-    "p1000_single_gen2": [
-        "opentrons_96_tiprack_1000ul",
-        "opentrons_96_filtertiprack_1000ul",
-    ],
-    "p300_multi_gen2": [],
-    "p20_multi_gen2": [],
-    "p10_single": ["opentrons_96_tiprack_10ul", "opentrons_96_filtertiprack_10ul"],
-    "p10_multi": ["opentrons_96_tiprack_10ul", "opentrons_96_filtertiprack_10ul"],
-    "p50_single": [],
-    "p50_multi": [],
-    "p300_single": ["opentrons_96_tiprack_300ul"],
-    "p300_multi": [],
-    "p1000_single": [
-        "opentrons_96_tiprack_1000ul",
-        "opentrons_96_filtertiprack_1000ul",
-    ],
-}
 
 # Map terms in the Container ontology of pylabrobot and assign them to LabOP container onthology
 # its taking a LabOp term and making a correspondence to a Pylabrobot term
