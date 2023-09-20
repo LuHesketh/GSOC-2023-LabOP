@@ -189,8 +189,6 @@ def generate_initialize_subprotocol(doc):
     return protocol
 
 #here the PCR samples would already be inside the MPE2 and the pressure pump would be activated
-#pushing the PCR through the collumns inside the container
-#a sub-protocol should be made to represent this step
 def generate_MPE_subprotocol(doc: sbol3.Document):
     import labop
     subprotocol = labop.Protocol("Activate_Air_pump")
