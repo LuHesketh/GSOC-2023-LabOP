@@ -12,7 +12,7 @@ from labop.strings import Strings
 import xarray as xr
 from tyto import OM
 import tyto
-from labop_convert.pylabrobot import pylabrobot_specialization
+from labop_convert.pylabrobot.pylabrobot_specialization import PylabrobotSpecialization
 
 
 filename = "".join(__file__.split(".py")[0].split("/")[-1:])
@@ -23,6 +23,8 @@ if not os.path.exists(OUT_DIR):
 def generate_initialize_subprotocol(doc):
     protocol = labop.Protocol("initialize")
     doc.add(protocol)
+    
+    instrument = sbol3.Agent('Hamilton_STARlet')
 
     # create the materials to be provisioned
     PCR = sbol3.Component(
@@ -44,7 +46,8 @@ def generate_initialize_subprotocol(doc):
     doc.add(PCR)
     doc.add(Ethanol)
     doc.add(water)
-    
+    doc.add(instrument)
+
     
     PROTOCOL_NAME = "initialize_PCR_PURIFICATION_PROTOCOL"
     PROTOCOL_LONG_NAME="initialize_PCR_PURIFICATION_PROTOCOL"
@@ -69,7 +72,8 @@ def generate_initialize_subprotocol(doc):
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
         ),
-        slots="(x=200, y=100, z=100)",
+        slots="(x=200, y=100, z=100)", instrument = instrument
+
     )
 
     load_Tiprack_on_deck = protocol.primitive_step(
@@ -88,7 +92,7 @@ def generate_initialize_subprotocol(doc):
                 "cont": "https://sift.net/container-ontology/container-ontology#Corning96WellPlate360uLFlat"
             },
         ),
-        slots="(x=200, y=100, z=100)",
+        slots="(x=200, y=100, z=100)", instrument = instrument
     )
 
     water_container = protocol.primitive_step(
@@ -101,7 +105,7 @@ def generate_initialize_subprotocol(doc):
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
         ),
-        slots="(x=400, y=100, z=100)",
+        slots="(x=400, y=100, z=100)", instrument = instrument
     )
 
     MPE_plate = protocol.primitive_step(
@@ -114,7 +118,7 @@ def generate_initialize_subprotocol(doc):
                 "cont": "https://github.com/PyLabRobot/pylabrobot/blob/main/pylabrobot/resources/corning_costar/plates.py"
             },
         ),
-        slots="(x=400, y=100, z=100)",
+        slots="(x=400, y=100, z=100)", instrument = instrument
     )
 
     provision = protocol.primitive_step(
@@ -446,7 +450,7 @@ This DNA cleanup/purification protocol is to be executed using 2 HAMILTON module
     ee = labop.ExecutionEngine(
         out_dir=OUT_DIR,
         failsafe=False,
-        specializations=[pylabrobot_specialization(filename=os.path.join(OUT_DIR, f"{filename}-pylabrobot.py"))],
+        specializations=[PylabrobotSpecialization(filename=os.path.join(OUT_DIR, f"{filename}-pylabrobot.py"))],
         sample_format="xarray"
     )
 

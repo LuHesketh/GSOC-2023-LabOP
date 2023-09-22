@@ -23,6 +23,7 @@ ContO = tyto.Ontology(
     path=container_ontology_path,
     uri="https://sift.net/container-ontology/container-ontology",
 )
+print(container_ontology_path)
 
 # Map pylabrobot pipette names to compatible tipracks
 # left is for Pylabrobot names
