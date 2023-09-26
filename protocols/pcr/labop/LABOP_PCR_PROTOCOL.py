@@ -213,7 +213,7 @@ def generate_protocol():
     # print("Importing libraries")
     labop.import_library("liquid_handling")
     # print("... Imported liquid handling")
-    labop.import_library(r"C:\Users\Luiza\GSOC-2023-LabOP\pylabrobot_convert\plate_handling.ttl")
+    labop.import_library("plate_handling")
     # print("... Imported plate handling")
     labop.import_library("sample_arrays")
     # print("... Imported sample arrays")
