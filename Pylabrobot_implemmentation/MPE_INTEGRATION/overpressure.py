@@ -27,8 +27,12 @@ comPort = 12
 BaudRate = 921600
 SimulationMode = 0
 options = 0
+
+#informations regarding plate dimensions
 FilterHeight = 14.9
 NozzleHeight = 14.9
+
+
 
 ControlPoints = "pressure, 0, 5;pressure, 10, 5;pressure, 15, 5;pressure, 20, 5;pressure, 30, 5;pressure, 40, 5;pressure, 50, 5; pressure, 60, 5"
 ReturnPlateToIntegrationArea = 1
